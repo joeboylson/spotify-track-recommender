@@ -9,6 +9,7 @@
     "client": "webpack-dev-server --open",
     "build": "webpack",
     "heroku-postbuild": "npm run build",
+    "heroku-logs": "heroku logs --tail --app spotifytrackrecommender", 
     "app": "python app.py"
   },
   "author": "",
