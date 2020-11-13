@@ -13,17 +13,37 @@ const Recommendations = () => {
   const [genres, setGenres] = useState([]);
   const [spotifyId, setSpotifyId] = useState(null)
 
+  const [paramMaxPopularity, setParamMaxPopularity] = useState(50);
+
+  let params = {
+    maxPopularity: paramMaxPopularity
+  }
+
+  const getRecommendations = () => {
+    useRecommendations(params)
+    .then(_recommendations => setRecommendations(_recommendations))
+  }
+
   useEffect(() => {
-    useRecommendations().then(_recommendations => setRecommendations(_recommendations))
+    getRecommendations();
     useSpotifyGenres().then(_genres => setGenres(_genres))
   }, [])
 
   return (  
     <div>
 
-      { recommendations.map((track, index) => {
+      <button onClick={getRecommendations}>Get Recommendations</button>
 
-        console.log({track})
+      <label htmlFor="maxPopularity">Max Popularity</label>
+      <input 
+        name="maxPopularity"
+        type="number" 
+        min={0} 
+        max={100}
+        onChange={e => setParamMaxPopularity(e.target.value)}
+      />
+
+      { recommendations.map((track, index) => {
 
         let { album, artists, name, id } = track;
 

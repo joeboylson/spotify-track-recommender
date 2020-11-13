@@ -70,28 +70,32 @@ def index ():
 def get_recommendations():
   try:
 
+    max_popularity = request.args.get('maxPopularity')
+
     request_data = [
         {
-            "popularity": 100,
             "tracks": ['5imUTBF35uIoABlV9g9da2'],
             "genres": ['metropopolis'],
             "note": "Phantogram - Falling in Love"
         },
         {
-            "popularity": 100,
             "tracks": ['0mY5WP4c7eBUfkDy3PIlOA'],
             "genres": [],
             "note": "Tokyo Twilight - Little Things"
         },
         {
-            "popularity": 50,
             "tracks": ['0aANMVp4NwsIwzgy551294'],
             "genres": [],
             "note": "MOONSTONE"
-        }
+        },
+        {
+            "tracks": ['2WfrK7vN1C7ScEauF96AHb', '11P1ofuhfbUdxHCBgTLIiy', '6AYrHFx4DQxdUQeSmAzNYr'],
+            "genres": [],
+            "note": "TOKiMONSTA"
+        },
     ]
 
-    record = request_data[0]
+    record = request_data[3]
 
     r = requests.get(
         url="https://api.spotify.com/v1/recommendations", 
@@ -99,7 +103,7 @@ def get_recommendations():
         params = {
             "seed_tracks": record['tracks'],
             "seed_genres": record['genres'],
-            "max_popularity": record['popularity']
+            "max_popularity": max_popularity
         }
     )
 
