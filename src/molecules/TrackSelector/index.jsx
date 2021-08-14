@@ -1,13 +1,17 @@
+import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
-import React, { useState } from 'react';
 import Drawer from '../../atoms/Drawer';
 import Track from '../../atoms/Track';
 import TrackSearch from '../../atoms/TrackSearch';
 
-const TrackSelector = () => {
+const TrackSelector = ({onChange}) => {
 
   const [open, setOpen] = useState(false);
   const [track, setTrack] = useState(null);
+
+  useEffect(() => {
+    return onChange(track);
+  }, [track]);
 
   return (
     <div>
