@@ -1,42 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import TargetOrMinMaxRange from "../../../molecules/TargetOrMinMaxRange";
-import { InputContainer } from "../StyledComponents";
+import InputWrapper from "../../../molecules/InputWrapper";
 
-const DurationMs = ({ onChange, defaultActive }) => {
-  const [active, setActive] = useState(defaultActive || false);
-  const [value, setValue] = useState();
+const description = `The duration of the track in milliseconds.`;
 
-  useEffect(() => {
-    if (!active) return onChange(null);
-    return onChange(value);
-  }, [value, active]);
-
-  const handleActiveChange = (e) => {
-    setActive(e.target.checked);
-  };
-
+const DurationMs = (props) => {
   return (
-    <InputContainer>
-      <input
-        type="checkbox"
-        defaultChecked={defaultActive}
-        onChange={handleActiveChange}
-      />
-
-      <div>
-        <h1>DurationMs</h1>
-        <p>The duration of the track in milliseconds.</p>
-      </div>
-
-      <TargetOrMinMaxRange
-        min={0}
-        max={1}
-        minDefault={0.25}
-        maxDefault={0.75}
-        onChange={(_value) => setValue(_value)}
-        disabled={!active}
-      />
-    </InputContainer>
+    <InputWrapper
+      {...props}
+      title="DurationMs"
+      description={description}
+      render={(active, setValue) => (
+        <TargetOrMinMaxRange
+          min={0}
+          max={600000}
+          minDefault={180000}
+          maxDefault={300000}
+          onChange={(_value) => setValue(_value)}
+          disabled={!active}
+        />
+      )}
+    />
   );
 };
 

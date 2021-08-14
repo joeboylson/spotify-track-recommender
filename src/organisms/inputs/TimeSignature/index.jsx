@@ -1,46 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import TargetOrMinMaxRange from "../../../molecules/TargetOrMinMaxRange";
-import { InputContainer } from "../StyledComponents";
+import InputWrapper from "../../../molecules/InputWrapper";
 
-const TimeSignature = ({ onChange, defaultActive }) => {
-  const [active, setActive] = useState(defaultActive || false);
-  const [value, setValue] = useState();
+const description = `An estimated overall time signature of a track. The time signature
+(meter) is a notational convention to specify how many beats are in
+each bar (or measure).`;
 
-  useEffect(() => {
-    if (!active) return onChange(null);
-    return onChange(value);
-  }, [value, active]);
-
-  const handleActiveChange = (e) => {
-    setActive(e.target.checked);
-  };
-
+const TimeSignature = (props) => {
   return (
-    <InputContainer>
-      <input
-        type="checkbox"
-        defaultChecked={defaultActive}
-        onChange={handleActiveChange}
-      />
-
-      <div>
-        <h1>TimeSignature</h1>
-        <p>
-          An estimated overall time signature of a track. The time signature
-          (meter) is a notational convention to specify how many beats are in
-          each bar (or measure).
-        </p>
-      </div>
-
-      <TargetOrMinMaxRange
-        min={0}
-        max={1}
-        minDefault={0.25}
-        maxDefault={0.75}
-        onChange={(_value) => setValue(_value)}
-        disabled={!active}
-      />
-    </InputContainer>
+    <InputWrapper
+      {...props}
+      title="TimeSignature"
+      description={description}
+      render={(active, setValue) => (
+        <TargetOrMinMaxRange
+          min={2}
+          max={12}
+          minDefault={2}
+          maxDefault={4}
+          onChange={(_value) => setValue(_value)}
+          disabled={!active}
+        />
+      )}
+    />
   );
 };
 

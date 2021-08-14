@@ -1,46 +1,30 @@
-import React, { useEffect, useState } from "react";
-import TargetOrMinMaxRange from "../../../molecules/TargetOrMinMaxRange";
-import { InputContainer } from "../StyledComponents";
+import React from "react";
+import InputWrapper from "../../../molecules/InputWrapper";
+import Select from "../../../atoms/Select";
 
-const Mode = ({ onChange, defaultActive }) => {
-  const [active, setActive] = useState(defaultActive || false);
-  const [value, setValue] = useState();
+const description = `Mode indicates the modality (major or minor) of a track, the type of
+scale from which its melodic content is derived. Major is
+represented by 1 and minor is 0.`;
 
-  useEffect(() => {
-    if (!active) return onChange(null);
-    return onChange(value);
-  }, [value, active]);
+const modeOptions = [
+  { name: "Major", value: 1 },
+  { name: "Minor", value: 0 },
+];
 
-  const handleActiveChange = (e) => {
-    setActive(e.target.checked);
-  };
-
+const Mode = (props) => {
   return (
-    <InputContainer>
-      <input
-        type="checkbox"
-        defaultChecked={defaultActive}
-        onChange={handleActiveChange}
-      />
-
-      <div>
-        <h1>Mode</h1>
-        <p>
-          Mode indicates the modality (major or minor) of a track, the type of
-          scale from which its melodic content is derived. Major is represented
-          by 1 and minor is 0.
-        </p>
-      </div>
-
-      <TargetOrMinMaxRange
-        min={0}
-        max={1}
-        minDefault={0.25}
-        maxDefault={0.75}
-        onChange={(_value) => setValue(_value)}
-        disabled={!active}
-      />
-    </InputContainer>
+    <InputWrapper
+      {...props}
+      title="Mode"
+      description={description}
+      render={(active, setValue) => (
+        <Select
+          disabled={!active}
+          options={modeOptions}
+          onChange={(_value) => setValue(_value)}
+        />
+      )}
+    />
   );
 };
 

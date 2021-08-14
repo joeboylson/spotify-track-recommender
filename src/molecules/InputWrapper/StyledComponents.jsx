@@ -6,3 +6,9 @@ export const InputContainer = styled.div`
   gap: 24px;
   align-items: center;
 `;
+
+export const TitleWrapper = styled.div`
+  display: flex;
+  gap: 12px;
+  align-items: center;
+`;

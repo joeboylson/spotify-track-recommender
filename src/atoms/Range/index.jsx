@@ -11,7 +11,6 @@ const Range = ({
   const [value, setValue] = useState(defaultValue);
 
   useEffect(() => {
-    console.log('Range: useEffect')
     if (onChange) onChange(value);
   }, [value]);
 

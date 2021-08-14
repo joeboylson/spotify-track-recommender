@@ -1,47 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import TargetOrMinMaxRange from "../../../molecules/TargetOrMinMaxRange";
-import { InputContainer } from "../StyledComponents";
+import InputWrapper from "../../../molecules/InputWrapper";
 
-const Liveness = ({ onChange, defaultActive }) => {
-  const [active, setActive] = useState(defaultActive || false);
-  const [value, setValue] = useState();
+const description = `Detects the presence of an audience in the recording. Higher
+liveness values represent an increased probability that the track
+was performed live. A value above 0.8 provides strong likelihood
+that the track is live.`;
 
-  useEffect(() => {
-    if (!active) return onChange(null);
-    return onChange(value);
-  }, [value, active]);
-
-  const handleActiveChange = (e) => {
-    setActive(e.target.checked);
-  };
-
+const Liveness = (props) => {
   return (
-    <InputContainer>
-      <input
-        type="checkbox"
-        defaultChecked={defaultActive}
-        onChange={handleActiveChange}
-      />
-
-      <div>
-        <h1>Liveness</h1>
-        <p>
-          Detects the presence of an audience in the recording. Higher liveness
-          values represent an increased probability that the track was performed
-          live. A value above 0.8 provides strong likelihood that the track is
-          live.
-        </p>
-      </div>
-
-      <TargetOrMinMaxRange
-        min={0}
-        max={1}
-        minDefault={0.25}
-        maxDefault={0.75}
-        onChange={(_value) => setValue(_value)}
-        disabled={!active}
-      />
-    </InputContainer>
+    <InputWrapper
+      {...props}
+      title="Liveness"
+      description={description}
+      render={(active, setValue) => (
+        <TargetOrMinMaxRange
+          min={0}
+          max={1}
+          minDefault={0.25}
+          maxDefault={0.75}
+          onChange={(_value) => setValue(_value)}
+          disabled={!active}
+        />
+      )}
+    />
   );
 };
 

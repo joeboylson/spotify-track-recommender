@@ -1,45 +1,39 @@
-import React, { useEffect, useState } from "react";
-import TargetOrMinMaxRange from "../../../molecules/TargetOrMinMaxRange";
-import { InputContainer } from "../StyledComponents";
+import React from "react";
+import InputWrapper from "../../../molecules/InputWrapper";
+import Select from "../../../atoms/Select";
 
-const Key = ({ onChange, defaultActive }) => {
-  const [active, setActive] = useState(defaultActive || false);
-  const [value, setValue] = useState();
+const description = `The key the track is in. Integers map to pitches using standard
+Pitch Class notation. (e.g. C, C♯/D♭, D, etc).`;
 
-  useEffect(() => {
-    if (!active) return onChange(null);
-    return onChange(value);
-  }, [value, active]);
+const keyOptions = [
+  { name: "C#/Db", value: 1 },
+  { name: "D", value: 2 },
+  { name: "D#/Eb", value: 3 },
+  { name: "E", value: 4 },
+  { name: "F", value: 5 },
+  { name: "F#/Gb", value: 6 },
+  { name: "G", value: 7 },
+  { name: "G#/Ab", value: 8 },
+  { name: "A", value: 9 },
+  { name: "A#/Bb", value: 10 },
+  { name: "B", value: 11 },
+  { name: "C", value: 12 },
+];
 
-  const handleActiveChange = (e) => {
-    setActive(e.target.checked);
-  };
-
+const Key = (props) => {
   return (
-    <InputContainer>
-      <input
-        type="checkbox"
-        defaultChecked={defaultActive}
-        onChange={handleActiveChange}
-      />
-
-      <div>
-        <h1>Key</h1>
-        <p>
-          The key the track is in. Integers map to pitches using standard Pitch
-          Class notation. (e.g. C, C♯/D♭, D, etc).
-        </p>
-      </div>
-
-      <TargetOrMinMaxRange
-        min={0}
-        max={1}
-        minDefault={0.25}
-        maxDefault={0.75}
-        onChange={(_value) => setValue(_value)}
-        disabled={!active}
-      />
-    </InputContainer>
+    <InputWrapper
+      {...props}
+      title="Key"
+      description={description}
+      render={(active, setValue) => (
+        <Select
+          disabled={!active}
+          options={keyOptions}
+          onChange={(_value) => setValue(_value)}
+        />
+      )}
+    />
   );
 };
 
