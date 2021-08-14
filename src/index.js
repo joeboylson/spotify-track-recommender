@@ -1,10 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-// styles
-import './index.scss'
-
-// components
-import App from './App/App';
+import App from './organisms/App';
 
 ReactDOM.render(<App/>, document.getElementById('root'));
