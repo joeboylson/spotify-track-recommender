@@ -1,32 +1,32 @@
 import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
 import Drawer from '../../atoms/Drawer';
-import Track from '../../atoms/Track';
-import TrackSearch from '../../atoms/TrackSearch';
+import Artist from '../../atoms/Artist';
+import ArtistSearch from '../../atoms/ArtistSearch';
 
-const TrackSelector = () => {
+const ArtistSelector = () => {
 
   const [open, setOpen] = useState(false);
-  const [track, setTrack] = useState(null);
+  const [artist, setArtist] = useState(null);
 
   return (
     <div>
 
-      { isEmpty(track) ? (
+      { isEmpty(artist) ? (
         <div>
           <button onClick={() => setOpen(true)}>Open</button>
           <Drawer open={open}>
-            <TrackSearch onTrackSelect={setTrack} autoFocus={open}/>
+            <ArtistSearch onArtistSelect={setArtist} autoFocus={open}/>
             <button onClick={() => setOpen(false)}>Close</button>
           </Drawer>
         </div>
       ) : (
-        <Track track={track}/>
+        <Artist artist={artist}/>
       ) }
     </div>
   );
 
 }
 
-export default TrackSelector;
+export default ArtistSelector;
 

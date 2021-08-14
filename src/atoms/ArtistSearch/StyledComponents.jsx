@@ -1,5 +1,5 @@
 import styled from 'styled-components';
 
-export const TrackSearchContainer = styled.div`
+export const ArtistSearchContainer = styled.div`
   width: 100%;
 `;

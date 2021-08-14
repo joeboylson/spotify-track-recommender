@@ -19,7 +19,6 @@ const TrackSearch = ({onTrackSelect, autoFocus}) => {
 
   return (
     <TrackSearchContainer>
-      <p>{queryString}</p>
       <input onChange={handleOnChange} autoFocus={autoFocus}/>
 
       { searchedTracks.map(track => {
@@ -32,8 +31,7 @@ const TrackSearch = ({onTrackSelect, autoFocus}) => {
 
     </TrackSearchContainer>
   );
-
-}
+};
 
 export default TrackSearch;
 

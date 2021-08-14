@@ -1,13 +1,14 @@
 import React, { useMemo } from 'react';
 import { TrackContainer } from './StyledComponents';
-import { MoreVert } from '../SVG'
 
-const Track = ({track, options}) => {
+const Track = ({track}) => {
 
   const src = useMemo(() => {
     if (!track) return "";
 
-    return track.album.images[0].url
+    const trackImage = track.album.images[0]    
+    return trackImage ? trackImage.url : 'https://via.placeholder.com/640?text=No Track Image';
+
   }, [track])
 
   const trackName = useMemo(() => track.name, [track])

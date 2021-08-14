@@ -176,6 +176,17 @@ def search_track():
   except Exception as e:
     return json.dumps({'success': False, 'message': str(e), 'data': None})
 
+@app.route('/api/artist')
+def search_artist():
+  query_string = request.args.get('queryString')
+  data = search_item(query_string, 'artist')
+  
+  try:
+    return json.dumps({'success': True, 'message': 'SUCCESS', 'data': data["artists"]})
+
+  except Exception as e:
+    return json.dumps({'success': False, 'message': str(e), 'data': None})
+
 # --------------------------------------------------------------------------------
 # START THE APP
 # --------------------------------------------------------------------------------

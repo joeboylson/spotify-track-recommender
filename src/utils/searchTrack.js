@@ -8,14 +8,7 @@ export const searchTrack = debounce((queryString, callback) => {
   }
   
   get('/api/track', { params: { queryString } }).then(({data}) => {
-    
-    if (!data.success) {
-      console.log(data.message)
-      return callback([])
-    }
-
-    console.log(data)
-    return callback(data.data.items)
-
+    if (!data.success) return callback([]);
+    return callback(data.data.items);
   })
 }, 1000)
