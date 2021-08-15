@@ -1,5 +1,5 @@
 import React from 'react';
-import Recommendations from '../Recommendations';
+import RecommendationsForm from '../RecommendationsForm';
 
 import {
   BrowserRouter as Router,
@@ -14,7 +14,7 @@ const App = () => (
     <Switch>
       <Route path="/">
         <ErrorBoundary>
-          <Recommendations/>
+          <RecommendationsForm/>
         </ErrorBoundary>
       </Route>
     </Switch>

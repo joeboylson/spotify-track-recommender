@@ -30,7 +30,7 @@ const InputWrapper = ({ title, description, render, defaultActive, onChange }) =
         <InfoModal>
           <p>{description}</p>
         </InfoModal>
-        <h1>{title}</h1>
+        <h2>{title}</h2>
       </TitleWrapper>
 
       { children }

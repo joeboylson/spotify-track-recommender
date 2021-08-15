@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import DualRange from "../../atoms/DualRange";
 import Range from "../../atoms/Range";
+import { RangeWrapper, RangeTypeSelectors } from "./StyledComponents";
 
 const rangeTypes = {
   target: "TARGET",
@@ -23,23 +24,25 @@ const TargetOrMinMaxRange = ({
   }, [minMax, onChange]);
 
   return (
-    <div>
-      <button
-        onClick={() => setRangeType(rangeTypes.target)}
-        disabled={disabled}
-      >
-        TARGET
-      </button>
-      <button
-        onClick={() => setRangeType(rangeTypes.minMax)}
-        disabled={disabled}
-      >
-        MIN MAX
-      </button>
+    <RangeWrapper>
+      <RangeTypeSelectors>
+        <button
+          onClick={() => setRangeType(rangeTypes.target)}
+          disabled={disabled}
+        >
+          TARGET
+        </button>
+        <button
+          onClick={() => setRangeType(rangeTypes.minMax)}
+          disabled={disabled}
+        >
+          MIN MAX
+        </button>
+      </RangeTypeSelectors>
 
       {rangeType === rangeTypes.target && (
         <Range
-          onChange={_value => setMinMax({ min: _value, max: _value })}
+          onChange={(_value) => setMinMax({ min: _value, max: _value })}
           min={min}
           max={max}
           type="range"
@@ -59,7 +62,17 @@ const TargetOrMinMaxRange = ({
           disabled={disabled}
         />
       )}
-    </div>
+
+      <div>
+        {rangeType === rangeTypes.minMax ? (
+          <p>
+            {minMax.min} : {minMax.max}
+          </p>
+        ) : (
+          <p>{minMax.min}</p>
+        )}
+      </div>
+    </RangeWrapper>
   );
 };
 

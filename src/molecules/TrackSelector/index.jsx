@@ -10,7 +10,8 @@ const TrackSelector = ({onChange}) => {
   const [track, setTrack] = useState(null);
 
   useEffect(() => {
-    return onChange(track);
+    if (!track) return onChange(null);
+    return onChange(track.id);
   }, [track]);
 
   return (
