@@ -15,7 +15,7 @@ import Tempo from "../inputs/Tempo";
 import TimeSignature from "../inputs/TimeSignature";
 import Valence from "../inputs/Valence";
 
-import TrackSelector from '../../molecules/TrackSelector';
+import TrackSelector from "../../molecules/TrackSelector";
 
 import { getRecommendations } from "../../utils/getRecommendations";
 import { RecommendationsFormWrapper } from "./StyledComponents";
@@ -34,12 +34,11 @@ function removeEmpty(obj) {
 const reducer = (state, action) => {
   const { key, value, index } = action.payload;
   switch (action.type) {
+    case "SET_MIN_MAX":
+      const minKey = snakeCase(`min_${key}`);
+      const maxKey = snakeCase(`max_${key}`);
+      const targetKey = snakeCase(`target_${key}`);
 
-    case 'SET_MIN_MAX':
-      const minKey = snakeCase(`min_${key}`)
-      const maxKey = snakeCase(`max_${key}`)
-      const targetKey = snakeCase(`target_${key}`)
-      
       if (!value) {
         state[minKey] = null;
         state[maxKey] = null;
@@ -57,12 +56,12 @@ const reducer = (state, action) => {
       state = removeEmpty(state);
       return state;
 
-    case 'SET_KEY':
+    case "SET_KEY":
       state[key] = value;
       state = removeEmpty(state);
       return state;
 
-    case 'SET_KEY_AT_INDEX':
+    case "SET_KEY_AT_INDEX":
       state[key][index] = value;
       state[key] = reject(state[key], isEmpty);
       state = removeEmpty(state);
@@ -72,62 +71,61 @@ const reducer = (state, action) => {
     default:
       throw new Error();
   }
-}
+};
 
 const RecommendationsForm = () => {
-
   const [state, dispatch] = useReducer(reducer, initialState);
   const history = useHistory();
 
   const setMinMax = (key) => {
     const type = "SET_MIN_MAX";
-    return (value) => dispatch({type, payload: { key, value }})
-  }
+    return (value) => dispatch({ type, payload: { key, value } });
+  };
 
   const setKey = (key) => {
     const type = "SET_KEY";
-    return (value) => dispatch({type, payload: { key, value }})
-  }
+    return (value) => dispatch({ type, payload: { key, value } });
+  };
 
   const setKeyAtIndex = (key, index) => {
     const type = "SET_KEY_AT_INDEX";
-    return (value) => dispatch({type, payload: { key, value, index }})
-  }
+    return (value) => dispatch({ type, payload: { key, value, index } });
+  };
 
   const submit = () => {
-    getRecommendations(state, tracks => {
-      if (!tracks) return;      
-  
-      window.localStorage.setItem('tracks', JSON.stringify(tracks))
-      history.push('tracks')
+    getRecommendations(state, (tracks) => {
+      if (!tracks) return;
+
+      window.localStorage.setItem("tracks", JSON.stringify(tracks));
+      history.push("/tracks");
     });
-  }
+  };
 
   return (
     <RecommendationsFormWrapper>
-      <TrackSelector onChange={setKeyAtIndex('seed_tracks', 0)}/>
-      <TrackSelector onChange={setKeyAtIndex('seed_tracks', 1)}/>
-      <TrackSelector onChange={setKeyAtIndex('seed_tracks', 2)}/>
-      <TrackSelector onChange={setKeyAtIndex('seed_tracks', 3)}/>
-      <TrackSelector onChange={setKeyAtIndex('seed_tracks', 4)}/>
+      <TrackSelector onChange={setKeyAtIndex("seed_tracks", 0)} />
+      <TrackSelector onChange={setKeyAtIndex("seed_tracks", 1)} />
+      <TrackSelector onChange={setKeyAtIndex("seed_tracks", 2)} />
+      <TrackSelector onChange={setKeyAtIndex("seed_tracks", 3)} />
+      <TrackSelector onChange={setKeyAtIndex("seed_tracks", 4)} />
 
-      <Acousticness onChange={setMinMax('acousticness')} />
-      <Danceability onChange={setMinMax('danceability')} />
-      <Energy onChange={setMinMax('energy')} />
-      <Instrumentalness onChange={setMinMax('instrumentalness')} />
-      <Liveness onChange={setMinMax('liveness')} />
-      <Loudness onChange={setMinMax('loudness')} />
-      <Speechiness onChange={setMinMax('speechiness')} />
-      <Valence onChange={setMinMax('valence')} />
+      <Acousticness onChange={setMinMax("acousticness")} />
+      <Danceability onChange={setMinMax("danceability")} />
+      <Energy onChange={setMinMax("energy")} />
+      <Instrumentalness onChange={setMinMax("instrumentalness")} />
+      <Liveness onChange={setMinMax("liveness")} />
+      <Loudness onChange={setMinMax("loudness")} />
+      <Speechiness onChange={setMinMax("speechiness")} />
+      <Valence onChange={setMinMax("valence")} />
 
       <hr />
 
-      <Key onChange={setKey('key')} />
-      <Mode onChange={setKey('mode')} />
-      <DurationMs onChange={setMinMax('duration_ms')} />
-      <Popularity onChange={setMinMax('popularity')} />
-      <Tempo onChange={setMinMax('tempo')} />
-      <TimeSignature onChange={setMinMax('time_signature')} />
+      <Key onChange={setKey("key")} />
+      <Mode onChange={setKey("mode")} />
+      <DurationMs onChange={setMinMax("duration_ms")} />
+      <Popularity onChange={setMinMax("popularity")} />
+      <Tempo onChange={setMinMax("tempo")} />
+      <TimeSignature onChange={setMinMax("time_signature")} />
 
       <button onClick={submit}>SUBMIT</button>
     </RecommendationsFormWrapper>
@@ -135,3 +133,4 @@ const RecommendationsForm = () => {
 };
 
 export default RecommendationsForm;
+
