@@ -19,6 +19,7 @@ import TrackSelector from '../../molecules/TrackSelector';
 
 import { getRecommendations } from "../../utils/getRecommendations";
 import { RecommendationsFormWrapper } from "./StyledComponents";
+import { useHistory } from "react-router-dom";
 
 const initialState = {
   seed_artists: [],
@@ -66,8 +67,6 @@ const reducer = (state, action) => {
       state[key] = reject(state[key], isEmpty);
       state = removeEmpty(state);
 
-      console.log(state)
-
       return state;
 
     default:
@@ -78,6 +77,7 @@ const reducer = (state, action) => {
 const RecommendationsForm = () => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
+  const history = useHistory();
 
   const setMinMax = (key) => {
     const type = "SET_MIN_MAX";
@@ -95,7 +95,12 @@ const RecommendationsForm = () => {
   }
 
   const submit = () => {
-    getRecommendations(state);
+    getRecommendations(state, tracks => {
+      if (!tracks) return;      
+  
+      window.localStorage.setItem('tracks', JSON.stringify(tracks))
+      history.push('tracks')
+    });
   }
 
   return (

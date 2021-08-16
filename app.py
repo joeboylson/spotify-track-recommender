@@ -3,8 +3,11 @@
 import os
 import json
 import requests
-from flask import Flask, request, render_template, Blueprint
+
+from flask import Flask, request, render_template, Blueprint, redirect
 from dotenv import load_dotenv
+from urllib.request import urlretrieve
+from urllib.parse import urlencode
 
 app = Flask(__name__, template_folder='./dist')
 dist_folder = Blueprint(
@@ -145,6 +148,8 @@ def search_track():
     query_string = request.args.get('queryString')
     data = search_item(query_string, 'track')
 
+    print(data)
+
     try:
         return json.dumps({'success': True, 'message': 'SUCCESS', 'data': data["tracks"]})
 
@@ -162,6 +167,17 @@ def search_artist():
 
     except Exception as e:
         return json.dumps({'success': False, 'message': str(e), 'data': None})
+
+@ app.route('/api/client_id')
+def get_client_id():
+    return json.dumps({'success': True, 'message': 'SUCCESS', 'data': CLIENT_ID})
+
+@ app.route('/create_playlist')
+def spotify_auth_callback():
+    if IS_PRODUCTION:
+        return redirect("/")
+    else:
+        return redirect("http://localhost:3000/create_playlist")
 
 # --------------------------------------------------------------------------------
 # START THE APP

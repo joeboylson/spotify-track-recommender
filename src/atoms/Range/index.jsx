@@ -7,6 +7,7 @@ const Range = ({
   max = 100,
   defaultValue = 25,
   disabled = false,
+  step=0.01
 }) => {
   const [value, setValue] = useState(defaultValue);
 
@@ -26,7 +27,7 @@ const Range = ({
       <input
         {...rangeParams}
         onChange={(e) => setValue(Number(e.target.value))}
-        step={0.01}
+        step={step}
       />
     </DualRangeContainer>
   );

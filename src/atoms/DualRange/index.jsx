@@ -8,6 +8,7 @@ const DualRange = ({
   max = 100,
   maxDefault = 75,
   disabled = false,
+  step=0.01
 }) => {
   const [rangeA, setRangeA] = useState(minDefault);
   const [rangeB, setRangeB] = useState(maxDefault);
@@ -32,14 +33,14 @@ const DualRange = ({
         {...rangeParams}
         onChange={(e) => setRangeA(Number(e.target.value))}
         defaultValue={minDefault}
-        step={0.01}
+        step={step}
       />
 
       <input
         {...rangeParams}
         onChange={(e) => setRangeB(Number(e.target.value))}
         defaultValue={maxDefault}
-        step={0.01}
+        step={step}
       />
     </DualRangeContainer>
   );

@@ -1,7 +1,6 @@
 import { get } from "axios";
 
-export const getRecommendations = (_params) => {
-
+export const getRecommendations = (_params, callback) => {
   const params = {
     ..._params,
     seed_tracks: _params.seed_tracks.join(','),
@@ -11,6 +10,6 @@ export const getRecommendations = (_params) => {
 
   get('/api/recommendations', { params }).then(({data}) => {
     if (!data.success) return callback([]);
-    console.log(data.data.tracks)
+    callback(data.data.tracks);
   });
 };

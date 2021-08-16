@@ -13,11 +13,12 @@ const Popularity = (props) => {
       render={(active, setValue) => (
         <TargetOrMinMaxRange
           min={0}
-          max={1}
-          minDefault={0.25}
-          maxDefault={0.75}
+          max={100}
+          minDefault={25}
+          maxDefault={50}
           onChange={(_value) => setValue(_value)}
           disabled={!active}
+          step={1}
         />
       )}
     />

@@ -15,6 +15,7 @@ const TargetOrMinMaxRange = ({
   max = 100,
   maxDefault = 75,
   disabled = false,
+  step=0.01
 }) => {
   const [minMax, setMinMax] = useState({ min: minDefault, max: minDefault });
   const [rangeType, setRangeType] = useState(rangeTypes.target);
@@ -47,7 +48,7 @@ const TargetOrMinMaxRange = ({
           max={max}
           type="range"
           defaultValue={minDefault}
-          step={0.01}
+          step={step}
           disabled={disabled}
         />
       )}
@@ -60,6 +61,7 @@ const TargetOrMinMaxRange = ({
           max={max}
           maxDefault={maxDefault}
           disabled={disabled}
+          step={step}
         />
       )}
 
