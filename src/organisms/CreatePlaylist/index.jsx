@@ -50,14 +50,13 @@ const CreatePlaylist = () => {
             `https://api.spotify.com/v1/playlists/${playlist.id}/tracks?access_token=${hash.access_token}`,
             { uris: trackUris }
           ).then( result => {
+            window.localStorage.removeItem("tracks");
+            window.localStorage.removeItem("playlist");
             setPlaylist(result)
           })
         });
       }
     );
-
-    window.localStorage.removeItem("tracks");
-    window.localStorage.removeItem("playlist");
   };
 
   return (
