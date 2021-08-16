@@ -175,7 +175,7 @@ def get_client_id():
 @ app.route('/create_playlist')
 def spotify_auth_callback():
     if IS_PRODUCTION:
-        return redirect("/create_playlist")
+        return render_template('index.html')
     else:
         return redirect("http://localhost:3000/create_playlist")
 
