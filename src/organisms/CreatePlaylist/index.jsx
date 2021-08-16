@@ -62,7 +62,7 @@ const CreatePlaylist = () => {
   return (
     <div>
       {playlist ? (
-        <p>{JSON.stringify(playlist)}</p>
+        <a href="/">RESET</a>
       ) : (
         <button onClick={createPlaylistFromLocalStorage}>
           CREATE PLAYLIST
