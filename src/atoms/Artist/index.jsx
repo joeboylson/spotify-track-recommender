@@ -1,16 +1,16 @@
-import React, { useMemo } from 'react';
-import { ArtistContainer } from './StyledComponents';
+import React, { useMemo } from "react";
+import { ArtistContainer } from "./StyledComponents";
 
-const Artist = ({artist}) => {
-
+const Artist = ({ artist }) => {
   const src = useMemo(() => {
     if (!artist) return "";
-    const artistImage = artist.images[0]
-    return artistImage ? artistImage.url : 'https://via.placeholder.com/640?text=No Artist Image';
+    const artistImage = artist.images[0];
+    return artistImage
+      ? artistImage.url
+      : "https://via.placeholder.com/640?text=No Artist Image";
+  }, [artist]);
 
-  }, [artist])
-
-  const artistName = useMemo(() => artist.name, [artist])
+  const artistName = useMemo(() => artist.name, [artist]);
 
   return (
     <ArtistContainer>
@@ -18,8 +18,6 @@ const Artist = ({artist}) => {
       <p>{artistName}</p>
     </ArtistContainer>
   );
-
-}
+};
 
 export default Artist;
-

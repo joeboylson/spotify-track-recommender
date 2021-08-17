@@ -1,0 +1,68 @@
+{
+  "data": {
+    "collaborative": false,
+    "description": "AAA",
+    "external_urls": {
+      "spotify": "https://open.spotify.com/playlist/4Qa2BnhyGbQSpJK7ndUumY"
+    },
+    "followers": {
+      "href": null,
+      "total": 0
+    },
+    "href": "https://api.spotify.com/v1/playlists/4Qa2BnhyGbQSpJK7ndUumY",
+    "id": "4Qa2BnhyGbQSpJK7ndUumY",
+    "images": [],
+    "name": "Test Playlist",
+    "owner": {
+      "display_name": "joeboylson",
+      "external_urls": {
+        "spotify": "https://open.spotify.com/user/joeboylson"
+      },
+      "href": "https://api.spotify.com/v1/users/joeboylson",
+      "id": "joeboylson",
+      "type": "user",
+      "uri": "spotify:user:joeboylson"
+    },
+    "primary_color": null,
+    "public": false,
+    "snapshot_id": "MSwzMzYzNWYyMzNhMmU2NjY4MmQ4ZTE0NTc5OGFhMDE1Njg2MzU2NGQy",
+    "tracks": {
+      "href": "https://api.spotify.com/v1/playlists/4Qa2BnhyGbQSpJK7ndUumY/tracks",
+      "items": [],
+      "limit": 100,
+      "next": null,
+      "offset": 0,
+      "previous": null,
+      "total": 0
+    },
+    "type": "playlist",
+    "uri": "spotify:playlist:4Qa2BnhyGbQSpJK7ndUumY"
+  },
+  "status": 201,
+  "statusText": "",
+  "headers": {
+    "cache-control": "private, max-age=0",
+    "content-length": "448",
+    "content-type": "application/json; charset=utf-8"
+  },
+  "config": {
+    "url": "https://api.spotify.com/v1/users/joeboylson/playlists?access_token=BQD0wy31ywo0UuTwvZGUYWdOlF9M2AtdbRNR3d0-vUq4Sxgo7epiYspE7BeiKrfzfH0LXQQ4_RkI1lnDj9muHeRk8n_N8O71JBsSZBrOjALZyz4BMkGjSTasO1G6jSaaob1G-WlOeCaY7JWXBPB8-ZMqvfRHdBJMB-TsHeRFXhl6p4s7NLttsBYvVC8YKvxhIv7s_ZPgmD0LRlRxT6jgtpxqxQ",
+    "method": "post",
+    "data": "{\"name\":\"Test Playlist\",\"public\":false,\"collaborative\":false,\"description\":\"AAA\"}",
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/json;charset=utf-8"
+    },
+    "transformRequest": [
+      null
+    ],
+    "transformResponse": [
+      null
+    ],
+    "timeout": 0,
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+    "maxContentLength": -1
+  },
+  "request": {}
+}

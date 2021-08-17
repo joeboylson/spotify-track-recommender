@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { get, post } from "axios";
+
+import tracks from "../Recommendations/data.json";
 import { isEmpty } from "lodash";
 
 const decodeHash = (hash) => {
@@ -35,7 +37,7 @@ const CreatePlaylist = () => {
   };
 
   const createPlaylistFromLocalStorage = () => {
-    const hash = decodeHash(window.location.hash);
+    const hash = decodeHash(location.hash);
 
     if (!hash) return console.log("NO HASH");
     if (!tracks) return console.log("NO TRACKS");
