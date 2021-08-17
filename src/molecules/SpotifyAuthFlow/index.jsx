@@ -15,7 +15,7 @@ const SpotifyAuthFlow = () => {
     get("/api/client_id").then(({ data }) => {
       const clientId = data.data;
       const redirectUri = `https://spotifytrackrecommender.herokuapp.com/create_playlist`;
-      const scope = `user-read-private%20user-read-email%20playlist-modify-private`;
+      const scope = encodeURIComponent('user-read-private user-read-email playlist-modify-private playlist-modify-public');
       const url = `https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token`;
       window.open(url, "_self");
     });
