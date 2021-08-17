@@ -3,6 +3,8 @@ import { isEmpty } from 'lodash';
 import Drawer from '../../atoms/Drawer';
 import Track from '../../atoms/Track';
 import TrackSearch from '../../atoms/TrackSearch';
+import { Button } from '@material-ui/core';
+import Add from '@material-ui/icons/Add';
 
 const TrackSelector = ({onChange}) => {
 
@@ -19,7 +21,13 @@ const TrackSelector = ({onChange}) => {
 
       { isEmpty(track) ? (
         <div>
-          <button onClick={() => setOpen(true)}>Open</button>
+          <Button 
+            variant="contained"
+            onClick={() => setOpen(true)}
+            color="primary"
+            startIcon={<Add/>}
+            disableElevation
+          >Select Track</Button>
           <Drawer open={open}>
             <TrackSearch onTrackSelect={setTrack} autoFocus={open}/>
             <button onClick={() => setOpen(false)}>Close</button>

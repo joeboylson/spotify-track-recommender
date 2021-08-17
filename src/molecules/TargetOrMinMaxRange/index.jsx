@@ -1,12 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import DualRange from "../../atoms/DualRange";
-import Range from "../../atoms/Range";
-import { RangeWrapper, RangeTypeSelectors } from "./StyledComponents";
-
-const rangeTypes = {
-  target: "TARGET",
-  minMax: "MIN_MAX",
-};
+import React from "react";
+import Slider from '@material-ui/core/Slider';
 
 const TargetOrMinMaxRange = ({
   onChange,
@@ -17,64 +10,23 @@ const TargetOrMinMaxRange = ({
   disabled = false,
   step=0.01
 }) => {
-  const [minMax, setMinMax] = useState({ min: minDefault, max: minDefault });
-  const [rangeType, setRangeType] = useState(rangeTypes.target);
 
-  useEffect(() => {
-    if (onChange) return onChange(minMax);
-  }, [minMax, onChange]);
+  const handleChange = (event, value) => {
+    const [min, max] = value;
+    onChange({min, max})
+  };
 
   return (
-    <RangeWrapper>
-      <RangeTypeSelectors>
-        <button
-          onClick={() => setRangeType(rangeTypes.target)}
-          disabled={disabled}
-        >
-          TARGET
-        </button>
-        <button
-          onClick={() => setRangeType(rangeTypes.minMax)}
-          disabled={disabled}
-        >
-          MIN MAX
-        </button>
-      </RangeTypeSelectors>
-
-      {rangeType === rangeTypes.target && (
-        <Range
-          onChange={(_value) => setMinMax({ min: _value, max: _value })}
-          min={min}
-          max={max}
-          type="range"
-          defaultValue={minDefault}
-          step={step}
-          disabled={disabled}
-        />
-      )}
-
-      {rangeType === rangeTypes.minMax && (
-        <DualRange
-          onChange={setMinMax}
-          min={min}
-          minDefault={minDefault}
-          max={max}
-          maxDefault={maxDefault}
-          disabled={disabled}
-          step={step}
-        />
-      )}
-
-      <div>
-        {rangeType === rangeTypes.minMax ? (
-          <p>
-            {minMax.min} : {minMax.max}
-          </p>
-        ) : (
-          <p>{minMax.min}</p>
-        )}
-      </div>
-    </RangeWrapper>
+    <Slider
+      min={min}
+      max={max}
+      step={step}
+      defaultValue={[minDefault, maxDefault]}
+      onChange={handleChange}
+      valueLabelDisplay="auto"
+      aria-labelledby="range-slider"
+      disabled={disabled}
+    />
   );
 };
 
