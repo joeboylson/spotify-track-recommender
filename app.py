@@ -4,21 +4,16 @@ import os
 import json
 import requests
 
-from flask import Flask, request, render_template, Blueprint, redirect
+from flask import Flask, request, render_template, Blueprint, redirect, send_from_directory
 from dotenv import load_dotenv
 from urllib.request import urlretrieve
 from urllib.parse import urlencode
 
-app = Flask(__name__, template_folder='./dist')
-dist_folder = Blueprint(
-    'dist', __name__, static_url_path='', static_folder='./dist')
-app.register_blueprint(dist_folder)
+app = Flask(__name__, static_url_path='', static_folder='frontend/build', template_folder="./build")
 
 # --------------------------------------------------------------------------------
 # CONSTANTS / ENV VARIABLES
 # --------------------------------------------------------------------------------
-
-DIST_DIRECTORY = "dist"
 
 IS_PRODUCTION = os.environ.get('PYTHON_ENV') == 'PRODUCTION'
 DEBUG = True if not IS_PRODUCTION else False
@@ -101,12 +96,14 @@ def search_item(q, type):
 @app.route('/')
 def index():
     ''' GET - returns "index.html" '''
-
     if (IS_PRODUCTION):
         return render_template('index.html')
     else:
         return "DEVELOPMENT"
 
+@app.route('/static/<path:path>')
+def send_static(path):
+    return send_from_directory('./build/static/', path)
 
 @app.route('/api/recommendations')
 def get_recommendations():
