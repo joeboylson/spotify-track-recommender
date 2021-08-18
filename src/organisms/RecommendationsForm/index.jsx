@@ -20,6 +20,9 @@ import TrackSelector from "../../molecules/TrackSelector";
 import { getRecommendations } from "../../utils/getRecommendations";
 import { RecommendationsFormWrapper } from "./StyledComponents";
 import { useHistory } from "react-router-dom";
+import { useCallback } from "react";
+import GenreSelect from "../../molecules/GenreSelect";
+import { Button } from "@material-ui/core";
 
 const initialState = {
   seed_artists: [],
@@ -109,6 +112,8 @@ const RecommendationsForm = () => {
       <TrackSelector onChange={setKeyAtIndex("seed_tracks", 3)} />
       <TrackSelector onChange={setKeyAtIndex("seed_tracks", 4)} />
 
+      <GenreSelect onChange={setKeyAtIndex("seed_genres", 0)} />
+
       <Acousticness onChange={setMinMax("acousticness")} />
       <Danceability onChange={setMinMax("danceability")} />
       <Energy onChange={setMinMax("energy")} />
@@ -117,9 +122,6 @@ const RecommendationsForm = () => {
       <Loudness onChange={setMinMax("loudness")} />
       <Speechiness onChange={setMinMax("speechiness")} />
       <Valence onChange={setMinMax("valence")} />
-
-      <hr />
-
       <Key onChange={setKey("key")} />
       <Mode onChange={setKey("mode")} />
       <DurationMs onChange={setMinMax("duration_ms")} />
@@ -127,10 +129,11 @@ const RecommendationsForm = () => {
       <Tempo onChange={setMinMax("tempo")} />
       <TimeSignature onChange={setMinMax("time_signature")} />
 
-      <button onClick={submit}>SUBMIT</button>
+      <Button variant="contained" color="primary" onClick={submit}>
+        Submit
+      </Button>
     </RecommendationsFormWrapper>
   );
 };
 
 export default RecommendationsForm;
-

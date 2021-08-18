@@ -1,5 +1,14 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const TrackSearchContainer = styled.div`
-  width: 100%;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+export const TrackButton = styled.button`
+  background-color: transparent;
+  border: 0;
+  outline: 0;
 `;

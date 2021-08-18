@@ -11,13 +11,13 @@ const Acousticness = (props) => {
       {...props}
       title="Acousticness"
       description={description}
-      render={(active, setValue) => (
+      render={(active, onChange) => (
         <TargetOrMinMaxRange
           min={0}
           max={1}
           minDefault={0.25}
           maxDefault={0.75}
-          onChange={(_value) => setValue(_value)}
+          onChange={i => onChange(i)}
           disabled={!active}
         />
       )}

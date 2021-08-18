@@ -1,5 +1,7 @@
 import React from "react";
 import Slider from '@material-ui/core/Slider';
+import { useEffect } from "react";
+import { useRef } from "react";
 
 const TargetOrMinMaxRange = ({
   onChange,
@@ -11,9 +13,13 @@ const TargetOrMinMaxRange = ({
   step=0.01
 }) => {
 
+  const valueRef = useRef({min: minDefault, max: maxDefault});
+
   const handleChange = (event, value) => {
     const [min, max] = value;
-    onChange({min, max})
+    const _value = {min, max}
+    onChange(_value);
+    valueRef.current = _value;
   };
 
   return (

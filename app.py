@@ -44,7 +44,6 @@ def set_session_token():
 
 def set_session_genres():
     try:
-
         result = requests.get(
             url="https://api.spotify.com/v1/recommendations/available-genre-seeds",
             headers=headers,
@@ -73,6 +72,8 @@ def set_session_markets():
 
 def search_item(q, type):
     try:
+        token = set_session_token()
+        headers = {"Authorization": "Bearer {}".format(token)}
         result = requests.get(
             url="https://api.spotify.com/v1/search",
             headers=headers,
@@ -108,6 +109,9 @@ def send_static(path):
 @app.route('/api/recommendations')
 def get_recommendations():
     try:
+        token = set_session_token()
+        headers = {"Authorization": "Bearer {}".format(token)}
+
         r = requests.get(
             url="https://api.spotify.com/v1/recommendations",
             headers=headers,
@@ -115,6 +119,7 @@ def get_recommendations():
         )
 
         data = r.json()
+        print(data)
 
         return json.dumps({'success': True, 'message': 'SUCCESS', 'data': data})
 
@@ -145,8 +150,6 @@ def search_track():
     query_string = request.args.get('queryString')
     data = search_item(query_string, 'track')
 
-    print(data)
-
     try:
         return json.dumps({'success': True, 'message': 'SUCCESS', 'data': data["tracks"]})
 
@@ -169,12 +172,12 @@ def search_artist():
 def get_client_id():
     return json.dumps({'success': True, 'message': 'SUCCESS', 'data': CLIENT_ID})
 
-@ app.route('/create_playlist')
+@ app.route('/tracks')
 def spotify_auth_callback():
     if IS_PRODUCTION:
         return render_template('index.html')
     else:
-        return redirect("http://localhost:3000/create_playlist")
+        return redirect("http://localhost:3000/tracks")
 
 # --------------------------------------------------------------------------------
 # START THE APP

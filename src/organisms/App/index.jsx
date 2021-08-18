@@ -1,10 +1,10 @@
 import React from "react";
 import RecommendationsForm from "../RecommendationsForm";
 import Recommendations from "../Recommendations";
-import CreatePlaylist from "../CreatePlaylist";
-
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ErrorBoundary from "../ErrorBoundary";
+import Footer from "../../molecules/Footer";
+import About from "../About";
 
 const App = () => (
   <Router>
@@ -15,9 +15,9 @@ const App = () => (
         </ErrorBoundary>
       </Route>
 
-      <Route path="/create_playlist">
+      <Route path="/about">
         <ErrorBoundary>
-          <CreatePlaylist/>
+          <About />
         </ErrorBoundary>
       </Route>
 
@@ -27,6 +27,7 @@ const App = () => (
         </ErrorBoundary>
       </Route>
     </Switch>
+    <Footer />
   </Router>
 );
 

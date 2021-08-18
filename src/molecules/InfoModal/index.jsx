@@ -1,26 +1,40 @@
+import { Button, IconButton, Modal } from "@material-ui/core";
+import { Info } from "@material-ui/icons";
 import React, { useState } from "react";
-import Modal from '../../atoms/Modal';
-import { HelpOutlined } from "../../atoms/SVG";
-import { InfoModalButton } from "./StyledComponents";
+import { ModalBody } from "./StyledComponents";
 
-const InfoModal = ({children, defaultOpen = false}) => {
-
+const InfoModal = ({ children, defaultOpen = false }) => {
   const [open, setOpen] = useState(defaultOpen);
+
+  const handleOpen = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpen(true)
+  }
+
+  const handleClose = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpen(false)
+  }
 
   return (
     <div>
-
-      <InfoModalButton onClick={() => setOpen(true)}>
-        <HelpOutlined/>
-      </InfoModalButton>
-
-      <Modal open={open}>
-        <div>
+      <IconButton aria-label="open info" onClick={handleOpen}>
+        <Info />
+      </IconButton>
+      <Modal open={open} onClose={handleOpen}>
+        <ModalBody>
           {children}
-        </div>
-        <button onClick={() => setOpen(false)}>close info modal</button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleClose}
+          >
+            Close
+          </Button>
+        </ModalBody>
       </Modal>
-
     </div>
   );
 };

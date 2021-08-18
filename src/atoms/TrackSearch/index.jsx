@@ -1,37 +1,40 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { searchTrack } from '../../utils/searchTrack';
-import { TrackSearchContainer } from './StyledComponents';
+import { TextField } from "@material-ui/core";
+import React, { useState, useCallback, useEffect, useRef } from "react";
+import { searchTrack } from "../../utils/searchTrack";
+import Track from "../Track";
+import { TrackButton, TrackSearchContainer } from "./StyledComponents";
 
-const TrackSearch = ({onTrackSelect, autoFocus}) => {
-
+const TrackSearch = ({ onTrackSelect, autoFocus }) => {
   const [queryString, setQueryString] = useState();
   const [searchedTracks, setSearchedTracks] = useState([]);
 
   useEffect(() => {
-    searchTrack(queryString, _searchedTracks => {
-      setSearchedTracks(_searchedTracks)
+    searchTrack(queryString, (_searchedTracks) => {
+      setSearchedTracks(_searchedTracks);
     });
-  }, [queryString])
+  }, [queryString]);
 
   const handleOnChange = useCallback((e) => {
-    setQueryString(e.target.value)
+    setQueryString(e.target.value);
   }, []);
 
   return (
     <TrackSearchContainer>
-      <input onChange={handleOnChange} autoFocus={autoFocus}/>
-
-      { searchedTracks.map(track => {
+      <TextField
+        label="Search"
+        variant="filled"
+        onChange={handleOnChange}
+        autoFocus={autoFocus}
+      />
+      {searchedTracks.map((track) => {
         return (
-          <button onClick={() => onTrackSelect(track)} key={track.id}>
-            <p>{track.name}: {track.artists.map(a => a.name).join(", ")}</p>
-          </button>
-        )
-      }) }
-
+          <TrackButton onClick={() => onTrackSelect(track)} key={track.id}>
+            <Track track={track}/>
+          </TrackButton>
+        );
+      })}
     </TrackSearchContainer>
   );
 };
 
 export default TrackSearch;
-

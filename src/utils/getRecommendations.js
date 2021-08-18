@@ -1,6 +1,9 @@
 import { get } from "axios";
 
 export const getRecommendations = (_params, callback) => {
+
+  console.log(_params)
+
   const params = {
     ..._params,
     seed_tracks: _params.seed_tracks.join(','),

@@ -11,3 +11,21 @@
 img {
   width: 100%;
 }
+
+:root {
+  max-width: 800px;
+  margin: auto;
+  padding: 48px 48px 72px 48px;
+}
+
+@media only screen and (max-width: 600px) {
+  :root {
+    padding: 24px 24px 72px 24px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  :root {
+    padding: 12px 12px 72px 12px;
+  }
+}

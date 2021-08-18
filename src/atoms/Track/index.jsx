@@ -16,7 +16,7 @@ const Track = ({track}) => {
 
   return (
     <TrackContainer>
-      <img src={src}></img>
+      <img src={src} alt="track album cover"></img>
       <p> <b>{trackName}:</b> {trackArtists}</p>
     </TrackContainer>
   );

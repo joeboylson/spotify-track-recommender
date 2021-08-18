@@ -1,3 +1,4 @@
+import { TextField } from '@material-ui/core';
 import React, { useState, useCallback, useEffect } from 'react';
 import { searchArtist } from '../../utils/searchArtist';
 import { ArtistSearchContainer } from './StyledComponents';
@@ -19,7 +20,7 @@ const TrackSearch = ({onArtistSelect, autoFocus}) => {
 
   return (
     <ArtistSearchContainer>
-      <input onChange={handleOnChange} autoFocus={autoFocus}/>
+      <TextField onChange={handleOnChange} autoFocus={autoFocus}/>
 
       { searchedArtists.map(artist => {
         return (
