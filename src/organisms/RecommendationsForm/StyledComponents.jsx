@@ -13,6 +13,7 @@ export const RecommendationsFormWrapper = styled.div`
   .MuiStepContent-root {
     margin: 12px 0 0 0;
     padding: 0 0 0 12px;
+    border-left: 1px solid #c3c3c3;
   }
 
   .MuiCollapse-wrapperInner {
