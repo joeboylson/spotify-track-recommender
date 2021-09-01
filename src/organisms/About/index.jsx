@@ -1,11 +1,11 @@
 import { Card, CardContent, CardHeader } from "@material-ui/core";
 import React from "react";
-import { AboutContainer } from './StyledComponents'
+import { AboutContainer } from "./StyledComponents";
 
 const About = () => (
   <AboutContainer>
     <Card>
-      <CardHeader title="Mission Statement"/>
+      <CardHeader title="Mission Statement" />
       <CardContent>
         <p>
           This application is a tool designed to make music discovery easy and
@@ -19,12 +19,10 @@ const About = () => (
           parameters that can be as general or specific as you want.
         </p>
         <p>
-          As human beings, we change; sometimes we go through a ~phase~ and lose
-          interest in a category of music after we've listned to the same 10
-          songs for the past month. Spotify won't know this - but you do. Create
-          your own playlist to get you in a mood, pump you up, calm you down, or
-          just something to listen to besides your roommate's playlist (we won't
-          tell them).
+          As human beings, we change; but Spotify won't know this. Don't get
+          stuck in a musical rut. Create your own playlist to get you in a mood,
+          pump you up, calm you down, or just something to drown out the
+          construction literally right outside your window.
         </p>
         <p>We're here for the vibes.</p>
       </CardContent>
