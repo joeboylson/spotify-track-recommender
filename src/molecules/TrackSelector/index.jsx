@@ -25,7 +25,8 @@ const TrackSelector = ({ onChange }) => {
     e.preventDefault();
     e.stopPropagation();
     setTrack(null);
-  }, [])
+    onChange(null)
+  }, [onChange])
 
   return (
     <div>

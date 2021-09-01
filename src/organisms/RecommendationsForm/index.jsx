@@ -1,5 +1,5 @@
+import React, { useMemo, useReducer } from "react";
 import { isEmpty, reject, snakeCase } from "lodash";
-import React, { useReducer } from "react";
 import Acousticness from "../inputs/Acousticness";
 import Danceability from "../inputs/Danceability";
 import DurationMs from "../inputs/DurationMs";
@@ -18,11 +18,15 @@ import Valence from "../inputs/Valence";
 import TrackSelector from "../../molecules/TrackSelector";
 
 import { getRecommendations } from "../../utils/getRecommendations";
-import { RecommendationsFormWrapper } from "./StyledComponents";
 import { useHistory } from "react-router-dom";
-import { useCallback } from "react";
 import GenreSelect from "../../molecules/GenreSelect";
-import { Button } from "@material-ui/core";
+import { Fab } from "@material-ui/core";
+import { Send } from "@material-ui/icons";
+
+import {
+  RecommendationsFormWrapper,
+  SubmitButtonWrapper,
+} from "./StyledComponents";
 
 const initialState = {
   seed_artists: [],
@@ -104,6 +108,13 @@ const RecommendationsForm = () => {
     });
   };
 
+  // TODO: move to react-hook-forms
+  const selectedTracks = useMemo(() => state["seed_tracks"], [state]);
+  const submitButtonIsDisabled = useMemo(
+    () => selectedTracks.length < 1,
+    [selectedTracks]
+  );
+
   return (
     <RecommendationsFormWrapper>
       <TrackSelector onChange={setKeyAtIndex("seed_tracks", 0)} />
@@ -129,9 +140,11 @@ const RecommendationsForm = () => {
       <Tempo onChange={setMinMax("tempo")} />
       <TimeSignature onChange={setMinMax("time_signature")} />
 
-      <Button variant="contained" color="primary" onClick={submit}>
-        Submit
-      </Button>
+      <SubmitButtonWrapper>
+        <Fab color="primary" onClick={submit} disabled={submitButtonIsDisabled}>
+          <Send />
+        </Fab>
+      </SubmitButtonWrapper>
     </RecommendationsFormWrapper>
   );
 };
