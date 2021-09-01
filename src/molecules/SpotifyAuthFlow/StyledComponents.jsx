@@ -5,7 +5,6 @@ export const CreatePlaylistWrapper = styled.div`
     flex-direction: column;
     gap: 12px;
     padding: 12px;
-    border: 1px solid #3f51b5;
-    border-radius: 4px;
+    border: 1px solid #c3c3c3;
     margin-bottom: 36px;
 `;

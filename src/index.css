@@ -29,3 +29,17 @@ img {
     padding: 12px 12px 72px 12px;
   }
 }
+
+/* MATERIAL UI OVERRIDES */
+
+.MuiAccordion-root {
+  border: 1px solid #c3c3c3;
+}
+
+.MuiCard-root {
+  border: 1px solid #c3c3c3;
+}
+
+.MuiButton-containedSecondary {
+  border: 1px solid #c3c3c3 !important;
+}
