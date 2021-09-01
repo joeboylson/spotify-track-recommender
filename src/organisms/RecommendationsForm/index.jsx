@@ -1,4 +1,4 @@
-import React, { useMemo, useReducer } from "react";
+import React, { useCallback, useMemo, useReducer } from "react";
 import { isEmpty, reject, snakeCase } from "lodash";
 import Acousticness from "../inputs/Acousticness";
 import Danceability from "../inputs/Danceability";
@@ -20,13 +20,22 @@ import TrackSelector from "../../molecules/TrackSelector";
 import { getRecommendations } from "../../utils/getRecommendations";
 import { useHistory } from "react-router-dom";
 import GenreSelect from "../../molecules/GenreSelect";
-import { Fab } from "@material-ui/core";
 import { Send } from "@material-ui/icons";
 
 import {
+  Fab,
+  Step,
+  Stepper,
+  StepLabel,
+  StepContent,
+} from "@material-ui/core";
+
+import {
+  RecommendationsFormSection,
   RecommendationsFormWrapper,
   SubmitButtonWrapper,
 } from "./StyledComponents";
+import { useState } from "react";
 
 const initialState = {
   seed_artists: [],
@@ -81,8 +90,10 @@ const reducer = (state, action) => {
 };
 
 const RecommendationsForm = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
   const history = useHistory();
+
+  // Reducer state controls
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const setMinMax = (key) => {
     const type = "SET_MIN_MAX";
@@ -115,33 +126,78 @@ const RecommendationsForm = () => {
     [selectedTracks]
   );
 
+    // Stepper Controls
+  const [step, setStep] = useState(0);
+
+  const steps = [
+    {
+      label: "Search & Select Tracks",
+      checkHasError: () => step === 0 ? false : submitButtonIsDisabled,
+      Content: () => (
+        <RecommendationsFormSection>
+          <TrackSelector onChange={setKeyAtIndex("seed_tracks", 0)} />
+          <TrackSelector onChange={setKeyAtIndex("seed_tracks", 1)} />
+          <TrackSelector onChange={setKeyAtIndex("seed_tracks", 2)} />
+          <TrackSelector onChange={setKeyAtIndex("seed_tracks", 3)} />
+          <TrackSelector onChange={setKeyAtIndex("seed_tracks", 4)} />
+        </RecommendationsFormSection>
+      ),
+    },
+    {
+      label: "Refine Search (optional)",
+      checkHasError: () => false,
+      Content: () => (
+        <RecommendationsFormSection>
+          <GenreSelect onChange={setKeyAtIndex("seed_genres", 0)} />
+          <Acousticness onChange={setMinMax("acousticness")} />
+          <Danceability onChange={setMinMax("danceability")} />
+          <Energy onChange={setMinMax("energy")} />
+          <Instrumentalness onChange={setMinMax("instrumentalness")} />
+          <Liveness onChange={setMinMax("liveness")} />
+          <Loudness onChange={setMinMax("loudness")} />
+          <Speechiness onChange={setMinMax("speechiness")} />
+          <Valence onChange={setMinMax("valence")} />
+
+          <DurationMs onChange={setMinMax("duration_ms")} />
+          <Popularity onChange={setMinMax("popularity")} />
+          <Tempo onChange={setMinMax("tempo")} />
+          <TimeSignature onChange={setMinMax("time_signature")} />
+
+          {/* 
+          TODO: fix these inputs
+          <Key onChange={setKey("key")} />
+          <Mode onChange={setKey("mode")} /> 
+          */}
+        </RecommendationsFormSection>
+      ),
+    },
+  ];
+
+
   return (
     <RecommendationsFormWrapper>
-      <TrackSelector onChange={setKeyAtIndex("seed_tracks", 0)} />
-      <TrackSelector onChange={setKeyAtIndex("seed_tracks", 1)} />
-      <TrackSelector onChange={setKeyAtIndex("seed_tracks", 2)} />
-      <TrackSelector onChange={setKeyAtIndex("seed_tracks", 3)} />
-      <TrackSelector onChange={setKeyAtIndex("seed_tracks", 4)} />
+      <Stepper activeStep={step} orientation="vertical">
+        {steps.map((step, i) => {
+          const { Content, label, checkHasError } = step;
+          const hasError = checkHasError(step, i);
 
-      <GenreSelect onChange={setKeyAtIndex("seed_genres", 0)} />
+          console.log(hasError)
 
-      <Acousticness onChange={setMinMax("acousticness")} />
-      <Danceability onChange={setMinMax("danceability")} />
-      <Energy onChange={setMinMax("energy")} />
-      <Instrumentalness onChange={setMinMax("instrumentalness")} />
-      <Liveness onChange={setMinMax("liveness")} />
-      <Loudness onChange={setMinMax("loudness")} />
-      <Speechiness onChange={setMinMax("speechiness")} />
-      <Valence onChange={setMinMax("valence")} />
-      <Key onChange={setKey("key")} />
-      <Mode onChange={setKey("mode")} />
-      <DurationMs onChange={setMinMax("duration_ms")} />
-      <Popularity onChange={setMinMax("popularity")} />
-      <Tempo onChange={setMinMax("tempo")} />
-      <TimeSignature onChange={setMinMax("time_signature")} />
+          return (
+            <Step key={label}>
+              <StepLabel onClick={() => setStep(i)} error={hasError}>
+                <h1>{label}</h1>
+              </StepLabel>
+              <StepContent>
+                <Content />
+              </StepContent>
+            </Step>
+          );
+        })}
+      </Stepper>
 
       <SubmitButtonWrapper>
-        <Fab color="primary" onClick={submit} disabled={submitButtonIsDisabled}>
+        <Fab size="small" color="primary" onClick={submit} disabled={submitButtonIsDisabled}>
           <Send />
         </Fab>
       </SubmitButtonWrapper>
