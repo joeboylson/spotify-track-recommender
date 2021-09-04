@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const RecommendationsFormWrapper = styled.div`
+export const RecommendationsFormWrapper = styled.form`
   display: flex;
   flex-direction: column;
   gap: 48px;

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useReducer } from "react";
-import { isEmpty, reject, snakeCase } from "lodash";
+import { isEmpty, range, reject, snakeCase } from "lodash";
 import Acousticness from "../inputs/Acousticness";
 import Danceability from "../inputs/Danceability";
 import DurationMs from "../inputs/DurationMs";
@@ -36,6 +36,9 @@ import {
   SubmitButtonWrapper,
 } from "./StyledComponents";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import SearchAndSelectTracks from "./steps/SearchAndSelectTracks";
+import AdjustMoodAndFeeling from "./steps/AdjustMoodAndFeeling";
 
 const initialState = {
   seed_artists: [],
@@ -90,6 +93,7 @@ const reducer = (state, action) => {
 };
 
 const RecommendationsForm = () => {
+  
   const history = useHistory();
 
   // Reducer state controls
@@ -129,59 +133,57 @@ const RecommendationsForm = () => {
     // Stepper Controls
   const [step, setStep] = useState(0);
 
+  const { control, register, handleSubmit, watch, formState: { errors } } = useForm();
+  const onSubmit = data => console.log(data);
+
+  const renderRefineControls = useCallback(() => (
+    <RecommendationsFormSection>
+    <GenreSelect onChange={setKeyAtIndex("seed_genres", 0)} />
+    <Acousticness onChange={setMinMax("acousticness")} />
+    <Danceability onChange={setMinMax("danceability")} />
+    <Energy onChange={setMinMax("energy")} />
+    <Instrumentalness onChange={setMinMax("instrumentalness")} />
+    <Liveness onChange={setMinMax("liveness")} />
+    <Loudness onChange={setMinMax("loudness")} />
+    <Speechiness onChange={setMinMax("speechiness")} />
+    <Valence onChange={setMinMax("valence")} />
+
+    <DurationMs onChange={setMinMax("duration_ms")} />
+    <Popularity onChange={setMinMax("popularity")} />
+    <Tempo onChange={setMinMax("tempo")} />
+    <TimeSignature onChange={setMinMax("time_signature")} />
+
+    {/* 
+    TODO: fix these inputs
+    <Key onChange={setKey("key")} />
+    <Mode onChange={setKey("mode")} /> 
+    */}
+  </RecommendationsFormSection>
+  ), []);
+
+  const stepProps = useMemo(() => ({
+    control
+  }), [control])
+
   const steps = [
     {
       label: "Search & Select Tracks",
       checkHasError: () => step === 0 ? false : submitButtonIsDisabled,
-      Content: () => (
-        <RecommendationsFormSection>
-          <TrackSelector onChange={setKeyAtIndex("seed_tracks", 0)} />
-          <TrackSelector onChange={setKeyAtIndex("seed_tracks", 1)} />
-          <TrackSelector onChange={setKeyAtIndex("seed_tracks", 2)} />
-          <TrackSelector onChange={setKeyAtIndex("seed_tracks", 3)} />
-          <TrackSelector onChange={setKeyAtIndex("seed_tracks", 4)} />
-        </RecommendationsFormSection>
-      ),
+      Content: () => <SearchAndSelectTracks {...stepProps}/>
     },
     {
       label: "Refine Search (optional)",
       checkHasError: () => false,
-      Content: () => (
-        <RecommendationsFormSection>
-          <GenreSelect onChange={setKeyAtIndex("seed_genres", 0)} />
-          <Acousticness onChange={setMinMax("acousticness")} />
-          <Danceability onChange={setMinMax("danceability")} />
-          <Energy onChange={setMinMax("energy")} />
-          <Instrumentalness onChange={setMinMax("instrumentalness")} />
-          <Liveness onChange={setMinMax("liveness")} />
-          <Loudness onChange={setMinMax("loudness")} />
-          <Speechiness onChange={setMinMax("speechiness")} />
-          <Valence onChange={setMinMax("valence")} />
-
-          <DurationMs onChange={setMinMax("duration_ms")} />
-          <Popularity onChange={setMinMax("popularity")} />
-          <Tempo onChange={setMinMax("tempo")} />
-          <TimeSignature onChange={setMinMax("time_signature")} />
-
-          {/* 
-          TODO: fix these inputs
-          <Key onChange={setKey("key")} />
-          <Mode onChange={setKey("mode")} /> 
-          */}
-        </RecommendationsFormSection>
-      ),
+      Content: () => <AdjustMoodAndFeeling {...stepProps}/>
     },
   ];
 
-
   return (
-    <RecommendationsFormWrapper>
+    <RecommendationsFormWrapper onSubmit={handleSubmit(onSubmit)}>
       <Stepper activeStep={step} orientation="vertical">
         {steps.map((step, i) => {
           const { Content, label, checkHasError } = step;
           const hasError = checkHasError(step, i);
-
-          console.log(hasError)
 
           return (
             <Step key={label}>

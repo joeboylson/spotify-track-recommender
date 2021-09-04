@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, forwardRef } from "react";
 import { isEmpty } from "lodash";
 import Track from "../../atoms/Track";
 import TrackSearch from "../../atoms/TrackSearch";
@@ -8,15 +8,18 @@ import { ArtistSelectDrawer, SelectedTrackWrapper } from "./StyledComponents";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-const TrackSelector = ({ onChange }) => {
+const TrackSelector = forwardRef( (props, ref) => {
+
+  const { onChange, value = null } = props;
+
   const [open, setOpen] = useState(false);
-  const [track, setTrack] = useState(null);
+  const [track, setTrack] = useState(value);
 
   const handleChange = useCallback(
     (track) => {
       setTrack(track);
       setOpen(false);
-      onChange(track.id);
+      onChange(track);
     },
     [onChange]
   );
@@ -59,6 +62,6 @@ const TrackSelector = ({ onChange }) => {
       )}
     </div>
   );
-};
+});
 
 export default TrackSelector;
