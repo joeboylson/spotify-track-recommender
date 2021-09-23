@@ -24,7 +24,12 @@ export const RecommendationsFormWrapper = styled.form`
 
   .MuiStepConnector-root {
     margin: 0;
-  } 
+  }
+
+  h2.disabled {
+    color: rgba(0, 0, 0, 0.3);
+    cursor: not-allowed;
+  }
 `;
 
 export const Instructions = styled.div`
@@ -60,6 +65,7 @@ export const StepWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  border: 1ps solid red;
 
   .MuiSlider-root {
     margin-left: 8px !important;
