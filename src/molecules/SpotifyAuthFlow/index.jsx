@@ -38,10 +38,14 @@ const SpotifyAuthFlow = () => {
           <h3>Want to save these songs as a playlist?</h3>
           <p>
             Clicking "Authenticate With Spotify" will redirect you to Spotify's
-            main login page. After this, you
+            main login page. Follow the steps Spotify provides and we'll see you back here.
+          </p>
+          <p>
+            If you've authenticated before, you will not be redirected but will be
+            given the option to name and save the playlist right away.
           </p>
           <i>
-            Don't worry, your data and your Spotify account are safe. You're
+            Don't worry, your data and your Spotify account are safe. Your
             login is only used to see your Spotify account and create a playlist
             (if you choose to do so).
           </i>

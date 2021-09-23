@@ -1,4 +1,4 @@
-import React, { useState, useCallback, forwardRef } from "react";
+import React, { useState, useCallback } from "react";
 import { isEmpty } from "lodash";
 import Track from "../../atoms/Track";
 import TrackSearch from "../../atoms/TrackSearch";
@@ -8,42 +8,50 @@ import { ArtistSelectDrawer, SelectedTrackWrapper } from "./StyledComponents";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-const TrackSelector = forwardRef( (props, ref) => {
-
-  const { onChange, value = null } = props;
-
-  const [open, setOpen] = useState(false);
+const TrackSelector = ({
+  onAddTrack,
+  onRemoveTrack,
+  value = null,
+  defaultOpen = false,
+  showAddTrackButton = false,
+}) => {
+  const [open, setOpen] = useState(defaultOpen);
   const [track, setTrack] = useState(value);
 
   const handleChange = useCallback(
-    (track) => {
-      setTrack(track);
+    (_track) => {
+      setTrack(_track);
       setOpen(false);
-      onChange(track);
+      onAddTrack(_track);
     },
-    [onChange]
+    [onAddTrack]
   );
 
-  const removeTrack = useCallback(e => {
-    e.preventDefault();
-    e.stopPropagation();
-    setTrack(null);
-    onChange(null)
-  }, [onChange])
+  const removeTrack = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      onRemoveTrack(track);
+      setTrack(null);
+    },
+    [track, onRemoveTrack]
+  );
 
   return (
     <div>
       {isEmpty(track) ? (
         <div>
-          <Button
-            variant="contained"
-            onClick={() => setOpen(true)}
-            color="primary"
-            startIcon={<Add />}
-            disableElevation
-          >
-            Select Track
-          </Button>
+          {showAddTrackButton && (
+            <Button
+              variant="contained"
+              onClick={() => setOpen(true)}
+              color="primary"
+              startIcon={<Add />}
+              disableElevation
+            >
+              Select Track
+            </Button>
+          )}
           <ArtistSelectDrawer
             open={open}
             anchor="right"
@@ -62,6 +70,6 @@ const TrackSelector = forwardRef( (props, ref) => {
       )}
     </div>
   );
-});
+};
 
 export default TrackSelector;

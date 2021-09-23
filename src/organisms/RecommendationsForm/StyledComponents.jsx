@@ -12,7 +12,7 @@ export const RecommendationsFormWrapper = styled.form`
 
   .MuiStepContent-root {
     margin: 12px 0 0 0;
-    padding: 0 0 0 12px;
+    padding: 0 12px 0 12px;
     border-left: 1px solid #c3c3c3;
   }
 
@@ -25,6 +25,14 @@ export const RecommendationsFormWrapper = styled.form`
   .MuiStepConnector-root {
     margin: 0;
   } 
+`;
+
+export const Instructions = styled.div`
+  border: 1px solid #c3c3c3;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
 `;
 
 export const RecommendationsFormSection = styled.div`
@@ -45,5 +53,21 @@ export const SubmitButtonWrapper = styled.div`
 
   @media only screen and (min-width: 928px) {
     right: calc(50% - 64px - 400px);
+  }
+`;
+
+export const StepWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .MuiSlider-root {
+    margin-left: 8px !important;
+    width: calc(100% - 8px);
+  }
+
+  .MuiSelect-root {
+    padding-top: 0;
+    padding-bottom: 2px;
   }
 `;

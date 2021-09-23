@@ -16,7 +16,7 @@ const About = () => (
           Instead of limiting music discovery to only Spotify's Discover Weekly
           playlist and one's own effort of listening to song after song, we
           provide a means of generating selection of songs based on a set of
-          parameters that can be as general or specific as you want.
+          parameters that can be as general or as specific as you want.
         </p>
         <p>
           As human beings, we change; but Spotify won't know this. Don't get

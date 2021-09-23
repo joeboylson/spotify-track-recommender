@@ -1,37 +1,69 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
+import InputValueLabel from "./InputLabelValue";
 import InfoModal from "../InfoModal";
-import { InputAccordion, TitleWrapper } from "./StyledComponents";
-
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import inputDescriptions from "../../data/inputDescriptions.json"
+import { Chip } from "@material-ui/core";
+import { capitalize } from "lodash";
+import { InputWrapperLabel } from "./StyledComponents";
 
 const InputWrapper = ({
-  title,
-  description,
+  label,
+  name,
+  showValueLabel = true,
+  formatLabel,
   render,
-  defaultActive,
-  onChange,
+  setValue,
+  getDefaultValueProps,
+  watch
 }) => {
-  const [active, setActive] = useState(defaultActive || false);
+  const { isDirty, defaultValue } = getDefaultValueProps(name);
 
-  const children = useMemo(
-    () => render(active, onChange),
-    [active, render, onChange]
+  const currentValue = watch(name)
+
+  const onChange = useCallback(
+    (_, value) => setValue(name, value),
+    [name, setValue]
   );
 
+  const content = useMemo(
+    () => render({ name, id: name, defaultValue, onChange }),
+    [defaultValue, name, onChange, render]
+  );
+
+  const inputValueLabel = useMemo(() => {
+    if (formatLabel) {
+      const valueLabel = formatLabel(currentValue || defaultValue);
+      return valueLabel
+    } else {
+      return currentValue || defaultValue
+    }
+
+  }, [currentValue, defaultValue, formatLabel]) 
+
   return (
-    <InputAccordion onChange={(_, expanded) => setActive(expanded)}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <TitleWrapper>
-          <InfoModal>
-            <p>{description}</p>
-          </InfoModal>
-          <p>{title}</p>
-        </TitleWrapper>
-      </AccordionSummary>
-      <AccordionDetails>{children}</AccordionDetails>
-    </InputAccordion>
+    <div>
+      <InputWrapperLabel className="small">
+
+        <InfoModal>
+          { inputDescriptions[name] }
+        </InfoModal>
+
+        {label || capitalize(name)}
+        {isDirty && (
+          <Chip
+            variant="outlined"
+            size="small"
+            label="Reset"
+            onClick={() => setValue(name, null)}
+          />
+        )}
+
+        {isDirty && showValueLabel && (
+          <InputValueLabel value={inputValueLabel}/>
+        )}
+      </InputWrapperLabel>
+      <div>{content}</div>
+    </div>
   );
 };
 

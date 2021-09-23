@@ -90,6 +90,23 @@ def search_item(q, type):
         return []
 
 
+def get_tracks_audio_features(ids):
+    try:
+        token = set_session_token()
+        headers = {"Authorization": "Bearer {}".format(token)}
+        result = requests.get(
+            url="https://api.spotify.com/v1/audio-features",
+            headers=headers,
+            params=ids
+        )
+
+        return result.json()
+
+    except Exception as e:
+        print("THERE WAS AN ERROR")
+        print(e)
+        return []
+
 # --------------------------------------------------------------------------------
 # ROUTES
 # --------------------------------------------------------------------------------
@@ -169,6 +186,23 @@ def search_artist():
         return json.dumps({'success': True, 'message': 'SUCCESS', 'data': data["artists"]})
 
     except Exception as e:
+        return json.dumps({'success': False, 'message': str(e), 'data': None})
+
+
+@ app.route('/api/audio-features')
+def tracks_audio_features():
+    data = get_tracks_audio_features(request.args)
+
+    print("--------------------------------------------------")
+    print(data)
+    print("--------------------------------------------------")
+
+    try:
+        return json.dumps({'success': True, 'message': 'SUCCESS', 'data': data["audio_features"]})
+
+    except Exception as e:
+        print("THERE WAS AN ERROR")
+        print(e)
         return json.dumps({'success': False, 'message': str(e), 'data': None})
 
 

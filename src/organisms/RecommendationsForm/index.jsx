@@ -1,185 +1,116 @@
-import React, { useCallback, useMemo, useReducer } from "react";
-import { isEmpty, range, reject, snakeCase } from "lodash";
-import Acousticness from "../inputs/Acousticness";
-import Danceability from "../inputs/Danceability";
-import DurationMs from "../inputs/DurationMs";
-import Energy from "../inputs/Energy";
-import Instrumentalness from "../inputs/Instrumentalness";
-import Key from "../inputs/Key";
-import Liveness from "../inputs/Liveness";
-import Loudness from "../inputs/Loudness";
-import Mode from "../inputs/Mode";
-import Popularity from "../inputs/Popularity";
-import Speechiness from "../inputs/Speechiness";
-import Tempo from "../inputs/Tempo";
-import TimeSignature from "../inputs/TimeSignature";
-import Valence from "../inputs/Valence";
-
-import TrackSelector from "../../molecules/TrackSelector";
-
-import { getRecommendations } from "../../utils/getRecommendations";
+import React, { useCallback, useMemo } from "react";
 import { useHistory } from "react-router-dom";
-import GenreSelect from "../../molecules/GenreSelect";
 import { Send } from "@material-ui/icons";
 
-import {
-  Fab,
-  Step,
-  Stepper,
-  StepLabel,
-  StepContent,
-} from "@material-ui/core";
+import { Fab, Step, Stepper, StepLabel, StepContent } from "@material-ui/core";
 
 import {
-  RecommendationsFormSection,
+  Instructions,
   RecommendationsFormWrapper,
   SubmitButtonWrapper,
 } from "./StyledComponents";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import SearchAndSelectTracks from "./steps/SearchAndSelectTracks";
 import AdjustMoodAndFeeling from "./steps/AdjustMoodAndFeeling";
-
-const initialState = {
-  seed_artists: [],
-  seed_tracks: [],
-  seed_genres: [],
-};
-
-function removeEmpty(obj) {
-  return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null));
-}
-
-const reducer = (state, action) => {
-  const { key, value, index } = action.payload;
-  switch (action.type) {
-    case "SET_MIN_MAX":
-      const minKey = snakeCase(`min_${key}`);
-      const maxKey = snakeCase(`max_${key}`);
-      const targetKey = snakeCase(`target_${key}`);
-
-      if (!value) {
-        state[minKey] = null;
-        state[maxKey] = null;
-        state[targetKey] = null;
-      } else if (value.min === value.max) {
-        state[minKey] = null;
-        state[maxKey] = null;
-        state[targetKey] = value.min;
-      } else {
-        state[minKey] = value.min;
-        state[maxKey] = value.max;
-        state[targetKey] = null;
-      }
-
-      state = removeEmpty(state);
-      return state;
-
-    case "SET_KEY":
-      state[key] = value;
-      state = removeEmpty(state);
-      return state;
-
-    case "SET_KEY_AT_INDEX":
-      state[key][index] = value;
-      state[key] = reject(state[key], isEmpty);
-      state = removeEmpty(state);
-
-      return state;
-
-    default:
-      throw new Error();
-  }
-};
+import AdjustTechnicalParameters from "./steps/AdjustTechnicalParameters";
+import { useAudioFeaturesMinMax } from "../../hooks/useAudioFeaturesMinMax";
+import { isEmpty } from "lodash";
+import { getRecommendations } from "../../utils/getRecommendations";
 
 const RecommendationsForm = () => {
-  
+  const [step, setStep] = useState(0);
   const history = useHistory();
+  const { watch, getValues, setValue } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      limit: 30
+    }
+  });
 
-  // Reducer state controls
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  const setMinMax = (key) => {
-    const type = "SET_MIN_MAX";
-    return (value) => dispatch({ type, payload: { key, value } });
-  };
-
-  const setKey = (key) => {
-    const type = "SET_KEY";
-    return (value) => dispatch({ type, payload: { key, value } });
-  };
-
-  const setKeyAtIndex = (key, index) => {
-    const type = "SET_KEY_AT_INDEX";
-    return (value) => dispatch({ type, payload: { key, value, index } });
-  };
+  const tracks = watch("seed_tracks")
+  const { audioFeaturesMinMax, loading } = useAudioFeaturesMinMax(tracks);
+  const hasNoTracks = isEmpty(tracks);
 
   const submit = () => {
-    getRecommendations(state, (tracks) => {
+    const formValues = getValues();
+    getRecommendations(formValues, searchedTracks => {
       if (!tracks) return;
 
-      window.localStorage.setItem("tracks", JSON.stringify(tracks));
+      const playlistTracks = [...tracks, ...searchedTracks]
+      window.localStorage.setItem("tracks", JSON.stringify(playlistTracks));
       history.push("/tracks");
-    });
+    })
   };
 
-  // TODO: move to react-hook-forms
-  const selectedTracks = useMemo(() => state["seed_tracks"], [state]);
-  const submitButtonIsDisabled = useMemo(
-    () => selectedTracks.length < 1,
-    [selectedTracks]
+  const getDefaultValueProps = useCallback(
+    (fieldName, fallback) => {
+      const _values = getValues();
+      const _value = _values[fieldName];
+
+      if (!_value) {
+        const defaultValue = fallback || Object.values(audioFeaturesMinMax[fieldName])
+        return { isDirty: false, defaultValue };
+      }
+
+      return { isDirty: true, defaultValue: _value };
+    },
+    [getValues, audioFeaturesMinMax]
   );
 
-    // Stepper Controls
-  const [step, setStep] = useState(0);
-
-  const { control, register, handleSubmit, watch, formState: { errors } } = useForm();
-  const onSubmit = data => console.log(data);
-
-  const renderRefineControls = useCallback(() => (
-    <RecommendationsFormSection>
-    <GenreSelect onChange={setKeyAtIndex("seed_genres", 0)} />
-    <Acousticness onChange={setMinMax("acousticness")} />
-    <Danceability onChange={setMinMax("danceability")} />
-    <Energy onChange={setMinMax("energy")} />
-    <Instrumentalness onChange={setMinMax("instrumentalness")} />
-    <Liveness onChange={setMinMax("liveness")} />
-    <Loudness onChange={setMinMax("loudness")} />
-    <Speechiness onChange={setMinMax("speechiness")} />
-    <Valence onChange={setMinMax("valence")} />
-
-    <DurationMs onChange={setMinMax("duration_ms")} />
-    <Popularity onChange={setMinMax("popularity")} />
-    <Tempo onChange={setMinMax("tempo")} />
-    <TimeSignature onChange={setMinMax("time_signature")} />
-
-    {/* 
-    TODO: fix these inputs
-    <Key onChange={setKey("key")} />
-    <Mode onChange={setKey("mode")} /> 
-    */}
-  </RecommendationsFormSection>
-  ), []);
-
-  const stepProps = useMemo(() => ({
-    control
-  }), [control])
+  const stepProps = useMemo(
+    () => ({
+      watch,
+      setValue,
+      getDefaultValueProps,
+    }),
+    [setValue, getDefaultValueProps, watch]
+  );
 
   const steps = [
     {
       label: "Search & Select Tracks",
-      checkHasError: () => step === 0 ? false : submitButtonIsDisabled,
-      Content: () => <SearchAndSelectTracks {...stepProps}/>
+      // checkHasError: () => step === 0 ? false : submitButtonIsDisabled,
+      checkHasError: () => false,
+      Content: () => <SearchAndSelectTracks {...stepProps} />,
     },
     {
-      label: "Refine Search (optional)",
+      label: "Mood and Feeling",
       checkHasError: () => false,
-      Content: () => <AdjustMoodAndFeeling {...stepProps}/>
+      disabled: loading || hasNoTracks,
+      Content: () => <AdjustMoodAndFeeling {...stepProps} />,
+    },
+    {
+      label: "Technical Parameters",
+      checkHasError: () => false,
+      disabled: loading || hasNoTracks,
+      Content: () => <AdjustTechnicalParameters {...stepProps} />,
     },
   ];
 
   return (
-    <RecommendationsFormWrapper onSubmit={handleSubmit(onSubmit)}>
+    <RecommendationsFormWrapper>
+
+      <Instructions>
+        <h3>Hey there,</h3>
+        <p>
+          This is a website designed to help you generate a playlist of
+          songs that sound similar to the songs you know and love.
+        </p>
+        <p>
+          To begin, select at least 1 track (or a maximum of 5 tracks).
+        </p>
+        <p>
+          You can generate a playlist just off of your selected track(s)
+          or you can dive deeper into refining your search by adjusting the
+          sliders in the "Mood and Feeling" and "Technical Parameters" sections.
+        </p>
+        <p>
+          Once you're done, hit the arrow. This will take you to a new page with
+          your recommendations; from there, you can choose to save your songs.
+        </p>
+      </Instructions>
+      
       <Stepper activeStep={step} orientation="vertical">
         {steps.map((step, i) => {
           const { Content, label, checkHasError } = step;
@@ -187,8 +118,8 @@ const RecommendationsForm = () => {
 
           return (
             <Step key={label}>
-              <StepLabel onClick={() => setStep(i)} error={hasError}>
-                <h1>{label}</h1>
+              <StepLabel onClick={step.disabled ? null : () => setStep(i)} error={hasError}>
+                <h2>{label}</h2>
               </StepLabel>
               <StepContent>
                 <Content />
@@ -199,7 +130,12 @@ const RecommendationsForm = () => {
       </Stepper>
 
       <SubmitButtonWrapper>
-        <Fab size="small" color="primary" onClick={submit} disabled={submitButtonIsDisabled}>
+        <Fab
+          size="small"
+          color="primary"
+          onClick={submit}
+          disabled={hasNoTracks}
+        >
           <Send />
         </Fab>
       </SubmitButtonWrapper>

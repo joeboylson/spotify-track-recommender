@@ -13,6 +13,7 @@ const Recommendations = () => {
   return (
     <RecommendationsWrapper>
       <SpotifyAuthFlow />
+      <p>{tracks.length} Tracks</p>
       {tracks &&
         tracks.map((track) => (
           <TrackWrapper key={track.id}>

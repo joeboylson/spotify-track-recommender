@@ -18,6 +18,14 @@ img {
   padding: 48px 48px 72px 48px;
 }
 
+.small {
+  font-size: 12px;
+}
+
+.mono {
+  font-family: "Roboto Mono";
+}
+
 @media only screen and (max-width: 600px) {
   :root {
     padding: 24px 24px 72px 24px;
@@ -44,3 +52,12 @@ img {
 .MuiButton-containedSecondary {
   border: 1px solid #c3c3c3 !important;
 }
+
+.MuiSlider-root {
+  padding: 6px 0 !important;
+}
+
+.MuiInput-root, .MuiSelect-root {
+  width: 100%;
+}
+
