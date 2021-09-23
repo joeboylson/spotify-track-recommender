@@ -1,9 +1,6 @@
 import React from "react";
-import Slider from "@material-ui/core/Slider";
-import { useRef } from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import { useGenres } from "../../hooks/useGenres";
-import { GenreSelectWrapper } from "./StyledComponents";
 
 const toCapitalizedWords = (name) => {
   var words = name.match(/[A-Za-z][a-z]*/g) || [];

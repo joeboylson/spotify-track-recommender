@@ -1,12 +1,23 @@
-import Accordion from "@material-ui/core/Accordion";
-import styled from "styled-components";
+import styled from 'styled-components';
 
-export const InputAccordion = styled(Accordion)`
-  margin: 0 !important;
+export const InputWrapperLabel = styled.label`
+    display: block;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 `;
 
-export const TitleWrapper = styled.div`
-  display: flex;
-  gap: 12px;
-  align-items: center;
+export const InputvalueLabelContainer = styled.div`
+    display: flex;
+    border: 1px solid #c3c3c3;;
+    height: 22px;
+
+    span {
+        padding: 4px;
+    }
+
+    span:first-child {
+        border-right: 1px solid #c3c3c3;;
+    }
 `;

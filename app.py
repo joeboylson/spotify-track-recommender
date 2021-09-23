@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 from urllib.request import urlretrieve
 from urllib.parse import urlencode
 
-app = Flask(__name__, static_url_path='', static_folder='frontend/build', template_folder="./build")
+app = Flask(__name__, static_url_path='',
+            static_folder='frontend/build', template_folder="./build")
 
 # --------------------------------------------------------------------------------
 # CONSTANTS / ENV VARIABLES
@@ -89,6 +90,23 @@ def search_item(q, type):
         return []
 
 
+def get_tracks_audio_features(ids):
+    try:
+        token = set_session_token()
+        headers = {"Authorization": "Bearer {}".format(token)}
+        result = requests.get(
+            url="https://api.spotify.com/v1/audio-features",
+            headers=headers,
+            params=ids
+        )
+
+        return result.json()
+
+    except Exception as e:
+        print("THERE WAS AN ERROR")
+        print(e)
+        return []
+
 # --------------------------------------------------------------------------------
 # ROUTES
 # --------------------------------------------------------------------------------
@@ -102,9 +120,11 @@ def index():
     else:
         return "DEVELOPMENT"
 
+
 @app.route('/static/<path:path>')
 def send_static(path):
     return send_from_directory('./build/static/', path)
+
 
 @app.route('/api/recommendations')
 def get_recommendations():
@@ -168,9 +188,28 @@ def search_artist():
     except Exception as e:
         return json.dumps({'success': False, 'message': str(e), 'data': None})
 
+
+@ app.route('/api/audio-features')
+def tracks_audio_features():
+    data = get_tracks_audio_features(request.args)
+
+    print("--------------------------------------------------")
+    print(data)
+    print("--------------------------------------------------")
+
+    try:
+        return json.dumps({'success': True, 'message': 'SUCCESS', 'data': data["audio_features"]})
+
+    except Exception as e:
+        print("THERE WAS AN ERROR")
+        print(e)
+        return json.dumps({'success': False, 'message': str(e), 'data': None})
+
+
 @ app.route('/api/client_id')
 def get_client_id():
     return json.dumps({'success': True, 'message': 'SUCCESS', 'data': CLIENT_ID})
+
 
 @ app.route('/tracks')
 def spotify_auth_callback():
@@ -178,10 +217,6 @@ def spotify_auth_callback():
         return render_template('index.html')
     else:
         return redirect("http://localhost:3000/tracks")
-
-# --------------------------------------------------------------------------------
-# START THE APP
-# --------------------------------------------------------------------------------
 
 
 token = None

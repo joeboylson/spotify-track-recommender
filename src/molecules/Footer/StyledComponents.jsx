@@ -6,5 +6,5 @@ export const FooterBottomNavigation = styled(BottomNavigation)`
     bottom: 0;
     left: 0;
     width: 100%;
-    border-top: 1px solid #3f51b5;
+    border-top: 1px solid #c3c3c3;
 `

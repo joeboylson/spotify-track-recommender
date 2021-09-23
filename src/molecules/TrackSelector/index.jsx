@@ -8,38 +8,50 @@ import { ArtistSelectDrawer, SelectedTrackWrapper } from "./StyledComponents";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-const TrackSelector = ({ onChange }) => {
-  const [open, setOpen] = useState(false);
-  const [track, setTrack] = useState(null);
+const TrackSelector = ({
+  onAddTrack,
+  onRemoveTrack,
+  value = null,
+  defaultOpen = false,
+  showAddTrackButton = false,
+}) => {
+  const [open, setOpen] = useState(defaultOpen);
+  const [track, setTrack] = useState(value);
 
   const handleChange = useCallback(
-    (track) => {
-      setTrack(track);
+    (_track) => {
+      setTrack(_track);
       setOpen(false);
-      onChange(track.id);
+      onAddTrack(_track);
     },
-    [onChange]
+    [onAddTrack]
   );
 
-  const removeTrack = useCallback(e => {
-    e.preventDefault();
-    e.stopPropagation();
-    setTrack(null);
-  }, [])
+  const removeTrack = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      onRemoveTrack(track);
+      setTrack(null);
+    },
+    [track, onRemoveTrack]
+  );
 
   return (
     <div>
       {isEmpty(track) ? (
         <div>
-          <Button
-            variant="contained"
-            onClick={() => setOpen(true)}
-            color="primary"
-            startIcon={<Add />}
-            disableElevation
-          >
-            Select Track
-          </Button>
+          {showAddTrackButton && (
+            <Button
+              variant="contained"
+              onClick={() => setOpen(true)}
+              color="primary"
+              startIcon={<Add />}
+              disableElevation
+            >
+              Select Track
+            </Button>
+          )}
           <ArtistSelectDrawer
             open={open}
             anchor="right"

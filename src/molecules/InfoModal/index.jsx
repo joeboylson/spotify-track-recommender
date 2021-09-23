@@ -1,7 +1,7 @@
 import { Button, IconButton, Modal } from "@material-ui/core";
 import { Info } from "@material-ui/icons";
 import React, { useState } from "react";
-import { ModalBody } from "./StyledComponents";
+import { InfoModalContainer, ModalBody } from "./StyledComponents";
 
 const InfoModal = ({ children, defaultOpen = false }) => {
   const [open, setOpen] = useState(defaultOpen);
@@ -19,7 +19,7 @@ const InfoModal = ({ children, defaultOpen = false }) => {
   }
 
   return (
-    <div>
+    <InfoModalContainer>
       <IconButton aria-label="open info" onClick={handleOpen}>
         <Info />
       </IconButton>
@@ -35,7 +35,7 @@ const InfoModal = ({ children, defaultOpen = false }) => {
           </Button>
         </ModalBody>
       </Modal>
-    </div>
+    </InfoModalContainer>
   );
 };
 
