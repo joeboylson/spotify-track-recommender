@@ -28,7 +28,7 @@ const CreatePlaylist = ({ spotifyUser }) => {
 
     post(
       `https://api.spotify.com/v1/users/${spotifyUser.user.id}/playlists?access_token=${spotifyUser.hash.access_token}`,
-      { name, description }
+      { name, description, public: false, collaborative: false }
     )
       .then((playlistData) => {
         const playlist = playlistData.data;
