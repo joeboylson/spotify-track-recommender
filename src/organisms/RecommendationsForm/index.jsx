@@ -17,14 +17,19 @@ import AdjustTechnicalParameters from "./steps/AdjustTechnicalParameters";
 import { useAudioFeaturesMinMax } from "../../hooks/useAudioFeaturesMinMax";
 import { isEmpty } from "lodash";
 import { getRecommendations } from "../../utils/getRecommendations";
+import { getLocalStorage, setLocalStorage } from "../../utils/localStorage";
 
 const RecommendationsForm = () => {
   const [step, setStep] = useState(0);
   const history = useHistory();
+
+  const savedDefaultFormValues = getLocalStorage("formValues")
+
   const { watch, getValues, setValue } = useForm({
     mode: "onChange",
     defaultValues: {
-      limit: 30
+      limit: 30,
+      ...savedDefaultFormValues
     }
   });
 
@@ -36,11 +41,10 @@ const RecommendationsForm = () => {
     const formValues = getValues();
     getRecommendations(formValues, searchedTracks => {
       if (!tracks) return;
-
-      const playlistTracks = [...tracks, ...searchedTracks]
-      window.localStorage.setItem("tracks", JSON.stringify(playlistTracks));
-      history.push("/tracks");
-    })
+      setLocalStorage("playlistTracks", [...tracks, ...searchedTracks]);
+      setLocalStorage("formValues", formValues);
+      history.push("/tracks")
+    });
   };
 
   const getDefaultValueProps = useCallback(
