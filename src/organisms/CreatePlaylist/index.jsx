@@ -4,6 +4,7 @@ import { isEmpty } from "lodash";
 import { Button, Snackbar, TextField } from "@material-ui/core";
 import { PlaylistForm } from "./StyledComponents";
 import Alert from "@material-ui/lab/Alert";
+import { clearLocalStorage } from "../../utils/localStorage";
 
 const CreatePlaylist = ({ spotifyUser }) => {
   const [createdPlaylist, setCreatedPlaylist] = useState(null);
@@ -43,6 +44,7 @@ const CreatePlaylist = ({ spotifyUser }) => {
               message: `Created New Playlist called "${playlist.name}"`,
               severity: "success"
             })
+            clearLocalStorage("formValues")
           })
           .catch(handleError);
       })

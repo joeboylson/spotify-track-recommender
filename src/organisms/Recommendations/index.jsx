@@ -3,17 +3,17 @@ import { Audiotrack } from "@material-ui/icons";
 import React from "react";
 import Track from "../../atoms/Track";
 import SpotifyAuthFlow from "../../molecules/SpotifyAuthFlow";
+import { getLocalStorage } from "../../utils/localStorage";
 
 import { RecommendationsWrapper, TrackWrapper } from "./StyledComponents";
 
 const Recommendations = () => {
-  const tracksString = window.localStorage.getItem("tracks");
-  const tracks = tracksString && JSON.parse(tracksString);
+  const tracks = getLocalStorage("playlistTracks");
 
   return (
     <RecommendationsWrapper>
       <SpotifyAuthFlow />
-      <p>{tracks.length} Tracks</p>
+      <p>{tracks ? tracks.length : "No"} Tracks</p>
       {tracks &&
         tracks.map((track) => (
           <TrackWrapper key={track.id}>
