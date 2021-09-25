@@ -13,10 +13,7 @@ const decodeHash = (hash) => {
     hashObj[key] = value;
   });
 
-  if (hashObj.error) {
-    return null;
-  }
-
+  if (hashObj.error) return null;
   return hashObj;
 };
 
@@ -26,16 +23,11 @@ export const useSpotifyUser = () => {
   const hash = decodeHash(window.location.hash);
 
   useEffect(() => {
-
-    if (!hash) return;
+    if (spotifyUser || !hash) return;
     get(`https://api.spotify.com/v1/me?access_token=${hash.access_token}`)
-    .then( ({data}) => {
-      setSpotifyUser({user: data, hash})
-    })
-    .catch(e => {
-      console.log("ERROR useSpotifyUser:", e)
-    });
-  })
+    .then( ({data}) => setSpotifyUser({user: data, hash}))
+    .catch(e => console.log("ERROR useSpotifyUser:", e));
+  }, [hash, spotifyUser])
 
   return { spotifyUser }
 };
