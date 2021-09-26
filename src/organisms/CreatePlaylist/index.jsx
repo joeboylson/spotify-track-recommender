@@ -4,7 +4,7 @@ import { isEmpty } from "lodash";
 import { Button, Snackbar, TextField } from "@material-ui/core";
 import { PlaylistForm } from "./StyledComponents";
 import Alert from "@material-ui/lab/Alert";
-import { clearLocalStorage } from "../../utils/localStorage";
+import { clearLocalStorage, getLocalStorage } from "../../utils/localStorage";
 
 const CreatePlaylist = ({ spotifyUser }) => {
   const [createdPlaylist, setCreatedPlaylist] = useState(null);
@@ -13,19 +13,19 @@ const CreatePlaylist = ({ spotifyUser }) => {
   const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState(null)
 
-  const tracks = window.localStorage.getItem("tracks");
-
   const handleError = useCallback((e) => {
     console.error(e);
     setLoading(false);
   }, []);
 
   const createPlaylistFromLocalStorage = () => {
-    setLoading(true);
-    if (!tracks) return console.log("NO TRACKS");
 
-    const tracksObj = JSON.parse(tracks);
-    const trackUris = tracksObj.map((t) => t.uri);
+    setLoading(true);
+    const tracks = getLocalStorage("playlistTracks");
+    console.log("TRACKS")
+
+    if (!tracks) return console.log("NO TRACKS");
+    const trackUris = tracks.map((t) => t.uri);
 
     post(
       `https://api.spotify.com/v1/users/${spotifyUser.user.id}/playlists?access_token=${spotifyUser.hash.access_token}`,
