@@ -1,14 +1,15 @@
-import { IconButton } from "@material-ui/core";
-import { Audiotrack } from "@material-ui/icons";
 import React from "react";
 import Track from "../../atoms/Track";
 import SpotifyAuthFlow from "../../molecules/SpotifyAuthFlow";
+import { IconButton } from "@material-ui/core";
+import { Audiotrack } from "@material-ui/icons";
 import { getLocalStorage } from "../../utils/localStorage";
-
+import { Redirect } from "react-router-dom";
 import { RecommendationsWrapper, TrackWrapper } from "./StyledComponents";
 
 const Recommendations = () => {
   const tracks = getLocalStorage("playlistTracks");
+  if (!tracks) return <Redirect to="/" />;
 
   return (
     <RecommendationsWrapper>
