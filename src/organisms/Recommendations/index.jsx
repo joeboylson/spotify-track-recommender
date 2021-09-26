@@ -11,6 +11,8 @@ const Recommendations = () => {
   const tracks = getLocalStorage("playlistTracks");
   if (!tracks) return <Redirect to="/" />;
 
+  console.log(tracks)
+
   return (
     <RecommendationsWrapper>
       <SpotifyAuthFlow />
